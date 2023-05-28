@@ -1,0 +1,388 @@
+Microsoft (R) Macro Assembler Version 6.14.8444		    05/28/23 23:29:26
+Kursach.asm						     Page 1 - 1
+
+
+				.386
+				;Задайте объём ПЗУ в байтах
+ = 1000				RomSize    EQU   4096
+
+ = 0002				DisplayPort = 2
+ = 0001				DisplayPowerPort = 1
+ = 0000				KbdPort = 0
+ = 0064				NMax = 100
+
+ 0000				IntTable   SEGMENT use16 AT 0
+				;Здесь размещаются адреса обработчиков прерываний
+ 0000				IntTable   ENDS
+
+ 0000				Data       SEGMENT use16 AT 40h
+				;Здесь размещаются описания переменных
+ 0000  000A [			DataHexArr db 10 dup(?) 
+        00
+       ]
+ 000A  000A [			DataHexTabl db 10 dup(?)
+        00
+       ]
+ 0014  0007 [			DataTable dd 7 dup(?)
+        00000000
+       ]
+ 0030  0007 [			Res db 7 dup (?)
+        00
+       ]
+ 0037 00000000			SelectedNumber DD ?
+ 003B 00			OldButton db    ?
+ 003C				Data       ENDS
+
+				;Задайте необходимый адрес стека
+ 0000				Stk        SEGMENT use16 AT 00FFh
+				;Задайте необходимый размер стека
+ 0000  0010 [			           dw    16 dup (?)
+        0000
+       ]
+ 0020				StkTop     Label Word
+ 0020				Stk        ENDS
+
+ 0000				InitData   SEGMENT use16
+ 0000				InitDataStart:
+				;Здесь размещаются описания констант
+
+
+
+ 0000				InitDataEnd:
+ 0000				InitData   ENDS
+
+ 0000				Code       SEGMENT use16
+				;Здесь размещаются описания констант
+
+				           ASSUME cs:Code,ds:Data,es:Data
+						   
+ 0000 00 01 02 03 04 05			HexArr DB 00h,01h,02h,03h,04h,05h,06h,07h,08h,09h
+       06 07 08 09
+ 000A 3F 0C 76 5E 4D 5B			HexTabl DB 3Fh,0Ch,76h,5Eh,4Dh,5Bh,7Bh,0Eh,7Fh,5Fh
+       7B 0E 7F 5F
+					;Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h  
+ 0014 00000500 00010000			Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h 
+       00020000 00050000
+       01000000 02000000
+       05000000
+ 0030				Initialization PROC
+ 0030  33 C0						xor ax, ax
+ 0032  A2 003B R					mov OldButton, al
+ 0035  A2 0030 R			        mov Res, al
+ 0038  A2 0031 R					mov Res+1, al
+ 003B  A2 0032 R					mov Res+2, al
+ 003E  A2 0033 R					mov Res+3, al
+ 0041  A2 0034 R					mov Res+4, al
+ 0044  A2 0035 R					mov Res+5, al
+ 0047  A2 0037 R					mov byte ptr SelectedNumber, al
+ 004A  A2 0038 R				    mov byte ptr SelectedNumber+1, al
+ 004D  A2 0039 R					mov byte ptr SelectedNumber+2, al
+ 0050  A2 003A R					mov byte ptr SelectedNumber+3, al
+ 0053  C3						RET
+ 0054				Initialization ENDP
+
+ 0054				KeyRead    PROC  Near ;Чтение кнопок
+ 0054  E4 00			           in    al, KbdPort
+ 0056  E8 0183					   call VibrDestr
+ 0059  8A E0					   mov   ah, al
+ 005B  32 06 003B R				   xor AL, OldButton
+						   ;Mov OldButton, ah
+ 005F  22 C4					   AND AL, AH         
+ 0061  C3			           RET
+ 0062				KeyRead    ENDP
+
+ 0062				AddSymbol  PROC  Near 
+ 0062  E4 00					   in al, KbdPort
+ 0064  3A 06 003B R				   cmp al, OldButton
+ 0068  74 51					   je m1
+ 006A  A2 003B R				   mov OldButton, al
+ 006D  3C FF			           cmp   al, 0ffh
+ 006F  74 4A			           jz    m1   ;Если нет символов для добавления (не нажата ни одна из кнопок)
+ 0071				m2:       
+ 0071  FE C4					   inc   ah
+ 0073  D0 E8			           shr   al, 1
+ 0075  72 FA					   jc m2
+ 0077  FE CC					   dec ah
+				           
+ 0079  32 C0					   xor al, al
+ 007B  8D 1E 0014 R				   lea BX, Table
+ 007F  02 C4					   add al, ah
+ 0081  02 C4					   add al, ah
+ 0083  02 C4					   add al, ah
+ 0085  02 C4					   add al, ah
+ 0087  D7					   xlat
+ 0088  A2 0037 R				   mov byte ptr SelectedNumber, al 
+ 008B  8D 1E 0015 R				   lea BX, Table+1
+ 008F  02 C4					   add al, ah
+ 0091  02 C4					   add al, ah
+ 0093  02 C4					   add al, ah
+ 0095  02 C4					   add al, ah
+ 0097  D7					   xlat
+ 0098  A2 0038 R				   mov byte ptr SelectedNumber+1, al  
+ 009B  8D 1E 0016 R				   lea BX, Table+2
+ 009F  02 C4					   add al, ah
+ 00A1  02 C4					   add al, ah
+ 00A3  02 C4					   add al, ah
+ 00A5  02 C4					   add al, ah
+ 00A7  D7					   xlat
+ 00A8  A2 0039 R				   mov byte ptr SelectedNumber+2, al  
+ 00AB  8D 1E 0017 R				   lea BX, Table+3
+ 00AF  02 C4					   add al, ah
+ 00B1  02 C4					   add al, ah
+ 00B3  02 C4					   add al, ah
+ 00B5  02 C4					   add al, ah
+ 00B7  D7					   xlat
+ 00B8  A2 003A R				   mov byte ptr SelectedNumber+3, al  		   
+ 00BB  C3			m1:		   RET           
+ 00BC				AddSymbol    ENDP
+
+ 00BC				AccumulationSumm PROC
+							;mov dl, SelectedNumber
+ 00BC  3A 06 003B R					cmp al, OldButton
+ 00C0  74 4C						jz m7
+							;cmp   al, 0ffh
+							;jz m7
+					
+ 00C2  32 C0						xor al,al
+ 00C4  83 3E 0039 R 00					cmp word ptr SelectedNumber+2, 0
+ 00C9  75 07						JNZ M8
+ 00CB  83 3E 0037 R 00					cmp word ptr SelectedNumber, 0
+ 00D0  74 3C						JZ M7
+
+							
+ 00D2  A1 0030 R		M8:			mov ax, word ptr Res
+ 00D5  02 06 0037 R					ADD al, byte ptr SelectedNumber
+ 00D9  37						AAA
+ 00DA  A3 0030 R					mov word ptr Res, ax
+
+							
+ 00DD  A1 0031 R					mov ax, word ptr Res+1
+ 00E0  02 06 0038 R					ADD al, byte ptr SelectedNumber+1
+ 00E4  37						AAA
+ 00E5  A3 0031 R					mov word ptr Res+1, ax
+
+							
+ 00E8  A1 0032 R					mov ax, word ptr Res+2
+ 00EB  02 06 0039 R					ADD al, byte ptr SelectedNumber+2
+ 00EF  37						AAA
+ 00F0  A3 0032 R					mov word ptr Res+2, ax
+
+							
+ 00F3  A1 0033 R					mov ax, word ptr Res+3
+ 00F6  02 06 003A R					ADD al, byte ptr SelectedNumber+3
+ 00FA  37						AAA
+ 00FB  A3 0033 R					mov word ptr Res+3, ax
+
+ 00FE  80 3E 0034 R 09					CMP Res+4, 09h
+ 0103  76 09						JBE M7
+ 0105  C6 06 0034 R 00					mov Res+4, 0h
+ 010A  FE 06 0035 R					INC [Res+5]
+ 010E  8B 2E 0037 R		m7:			mov bp, word ptr SelectedNumber
+ 0112  81 E5 00FF					and bp, 00FFh
+ 0116  C3						ret
+ 0117				AccumulationSumm ENDP
+
+
+ 0117				SumOut     PROC NEAR
+ 0117  8D 1E 000A R		            lea   bx, DataHexTabl 
+ 011B  8A 26 0030 R		            mov   ah, Res
+ 011F  8A C4			            mov   al,ah               ;теперь в al старшая цифра
+ 0121  D7			            xlat
+ 0122  F6 D0					    not al		   ;табличное преобразование старшей цифры
+ 0124  E6 02			            out   DisplayPort, al    ;выводим на страший индикатор
+ 0126  B0 01			            mov   al, 01h            
+ 0128  E6 01			            out   DisplayPowerPort, al    ;зажигаем старший индикатор    
+ 012A  B0 00			            mov   al,00h             
+ 012C  E6 01			            out   DisplayPowerPort, al    ;гасим индикатор
+ 012E  8A 26 0031 R				    mov   ah, Res+1       ;загружаем в регистры
+ 0132  8A C4			            mov   al, ah              ;текущее значение суммы                 
+ 0134  D7			            xlat
+ 0135  F6 D0					    not al         ;табличное преобразование младшей цифры
+ 0137  E6 02			            out   DisplayPort, al    ;Выводим на младший индикатор            
+ 0139  B0 02			            mov   al, 02h            
+ 013B  E6 01			            out   DisplayPowerPort, al    ;зажигаем младший индикатор
+ 013D  B0 00			            mov   al,00h
+ 013F  E6 01			            out   DisplayPowerPort, al    ;гасим индикатор
+ 0141  8A 26 0032 R				    mov   ah, Res+2       ;загружаем в регистры
+ 0145  8A C4			            mov   al, ah              ;текущее значение суммы                 
+ 0147  D7			            xlat
+ 0148  F6 D0					    not al         ;табличное преобразование младшей цифры
+ 014A  E6 02			            out   DisplayPort, al    ;Выводим на младший индикатор            
+ 014C  B0 04			            mov   al, 04h            
+ 014E  E6 01			            out   DisplayPowerPort, al    ;зажигаем младший индикатор
+ 0150  B0 00			            mov   al,00h
+ 0152  E6 01			            out   DisplayPowerPort, al    ;гасим индикатор
+ 0154  8A 26 0033 R				    mov   ah, Res+3       ;загружаем в регистры
+ 0158  8A C4			            mov   al, ah              ;текущее значение суммы                 
+ 015A  D7			            xlat
+ 015B  F6 D0					    not al         ;табличное преобразование младшей цифры
+ 015D  E6 02			            out   DisplayPort, al    ;Выводим на младший индикатор            
+ 015F  B0 08			            mov   al, 08h            
+ 0161  E6 01			            out   DisplayPowerPort, al    ;зажигаем младший индикатор
+ 0163  B0 00			            mov   al,00h
+ 0165  E6 01			            out   DisplayPowerPort, al    ;гасим индикатор
+ 0167  8A 26 0034 R				    mov   ah, Res+4       ;загружаем в регистры
+ 016B  8A C4			            mov   al, ah              ;текущее значение суммы                 
+ 016D  D7			            xlat
+ 016E  F6 D0					    not al         ;табличное преобразование младшей цифры
+ 0170  E6 02			            out   DisplayPort, al    ;Выводим на младший индикатор            
+ 0172  B0 20			            mov   al, 020h            
+ 0174  E6 01			            out   DisplayPowerPort, al    ;зажигаем младший индикатор
+ 0176  B0 00			            mov   al,00h
+ 0178  E6 01			            out   DisplayPowerPort, al    ;гасим индикатор
+ 017A  8A 26 0035 R					mov   ah, Res+5       ;загружаем в регистры
+ 017E  8A C4			            mov   al, ah              ;текущее значение суммы                 
+ 0180  D7			            xlat
+ 0181  F6 D0					    not al         ;табличное преобразование младшей цифры
+ 0183  E6 02			            out   DisplayPort, al    ;Выводим на младший индикатор            
+ 0185  B0 10			            mov   al, 010h            
+ 0187  E6 01			            out   DisplayPowerPort, al    ;зажигаем младший индикатор
+ 0189  B0 00			            mov   al,00h
+ 018B  E6 01			            out   DisplayPowerPort, al    ;гасим индикатор
+ 018D  32 E4					    xor ah, ah
+ 018F  C3			            ret
+ 0190				SumOut     ENDP
+
+ 0190				CopyArr PROC
+ 0190  B9 000A						MOV CX, 10 ;Загрузка счётчика циклов
+ 0193  8D 1E 0000 R					LEA BX, HexArr ;Загрузка адреса массива цифр
+ 0197  8D 2E 000A R					LEA BP, HexTabl ;Загрузка адреса таблицы преобразования
+ 019B  8D 3E 0000 R					LEA DI, DataHexArr ;Загрузка адреса массива цифр в сегменте данных
+ 019F  8D 36 000A R					LEA SI, DataHexTabl ;Загрузка адреса таблицы преобразования в сегменте данных
+ 01A3				M0:
+ 01A3  2E: 8A 07					MOV AL, CS:[BX] ;Чтение цифры из массива в аккумулятор
+ 01A6  88 05						MOV [DI], AL ;Запись цифры в сегмент данных/DataHexArr
+ 01A8  43						INC BX ;Модификация адреса HexArr
+ 01A9  47						INC DI ;Модификация адреса DataHexArr
+ 01AA  E2 F7						LOOP M0
+							
+ 01AC  B9 000A						MOV CX, 10 ;Загрузка счётчика циклов
+ 01AF				M1:
+ 01AF  2E: 8A 66 00					MOV AH, CS:[BP] ;Чтение графического образа из таблицы преобразования
+ 01B3  88 24						MOV [SI], AH ;Запись графического образа в сегмент данных/DataHexTabl
+ 01B5  45						INC BP ;Модификация адреса HexTabl
+ 01B6  46						INC SI ;Модификация адреса DataHexTabl
+ 01B7  E2 F6						LOOP M1
+ 01B9  33 ED						xor bp,bp
+							
+ 01BB  B9 000E						MOV CX, 14 ;Загрузка счётчика циклов
+ 01BE  8D 2E 0014 R					LEA BP, Table ;Загрузка адреса таблицы преобразования
+ 01C2  8D 36 0014 R					LEA SI, DataTable ;Загрузка адреса таблицы преобразования в сегменте данных
+ 01C6				M2:
+ 01C6  2E: 8A 66 00					MOV AH, CS:[BP] ;Чтение графического образа из таблицы преобразования
+ 01CA  88 24						MOV [SI], AH ;Запись графического образа в сегмент данных/DataTable
+ 01CC  2E: 8A 46 01					MOV AL, CS:[BP+1] ;Чтение графического образа из таблицы преобразования
+ 01D0  88 44 01						MOV [SI+1], AL ;Запись графического образа в сегмент данных/DataTable
+ 01D3  45						INC BP ;Модификация адреса Table
+ 01D4  46						INC SI ;Модификация адреса DataTable
+ 01D5  45						INC BP ;Модификация адреса Table
+ 01D6  46						INC SI ;Модификация адреса DataTable
+ 01D7  E2 ED						LOOP M2
+ 01D9  33 ED						xor bp,bp
+ 01DB  C3						ret
+ 01DC				CopyArr ENDP
+
+ 01DC				VibrDestr  PROC  NEAR
+ 01DC  8A E0			VD1:        mov   ah,al       ;Сохранение исходного состояния
+ 01DE  B7 00			            mov   bh,0        ;Сброс счётчика повторений
+ 01E0  EC			VD2:        in    al,dx       ;Ввод текущего состояния
+ 01E1  38 C4			            cmp   ah,al       ;Текущее состояние=исходному?
+ 01E3  75 F7			            jne   VD1         ;Переход, если нет
+ 01E5  FE C7			            inc   bh          ;Инкремент счётчика повторений
+ 01E7  80 FF 64			            cmp   bh,NMax     ;Конец дребезга?
+ 01EA  75 F4			            jne   VD2         ;Переход, если нет
+ 01EC  8A C4			            mov   al,ah       ;Восстановление местоположения данных
+ 01EE  C3			            ret
+ 01EF				VibrDestr  ENDP
+
+ 01EF				Start:
+ 01EF  B8 ---- R		           mov   ax,Data
+ 01F2  8E D8			           mov   ds,ax
+ 01F4  8E C0			           mov   es,ax
+ 01F6  B8 ---- R		           mov   ax,Stk
+ 01F9  8E D0			           mov   ss,ax
+ 01FB  8D 26 0020 R		           lea   sp,StkTop
+						   
+ 01FF  E8 FE2E					   call Initialization
+ 0202  E8 FF8B					   call CopyArr
+						   
+ 0205				MainLoop:  ;call KeyRead
+ 0205  E8 FE5A					   call AddSymbol
+ 0208  E8 FEB1					   call AccumulationSumm
+ 020B  E8 FF09					   call SumOut
+						   
+ 020E  EB F5					   jmp MainLoop
+				;Здесь размещается код программы
+
+
+				;В следующей строке необходимо указать смещение стартовой точки
+				           org   RomSize-16-((InitDataEnd-InitDataStart+15) AND 0FFF0h)
+				           ASSUME cs:NOTHING
+ 0FF0  EA ---- 01EF R		           jmp   Far Ptr Start
+ 0FF5				Code       ENDS
+				END		Start
+Microsoft (R) Macro Assembler Version 6.14.8444		    05/28/23 23:29:26
+Kursach.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+Code . . . . . . . . . . . . . .	16 Bit	 0FF5	  Para	  Private 
+Data . . . . . . . . . . . . . .	16 Bit	 003C	  Abs	  Private 
+InitData . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+IntTable . . . . . . . . . . . .	16 Bit	 0000	  Abs	  Private 
+Stk  . . . . . . . . . . . . . .	16 Bit	 0020	  Abs	  Private 
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+AccumulationSumm . . . . . . . .	P Near	 00BC	  Code	Length= 005B Public
+  M8 . . . . . . . . . . . . . .	L Near	 00D2	  Code	
+  m7 . . . . . . . . . . . . . .	L Near	 010E	  Code	
+AddSymbol  . . . . . . . . . . .	P Near	 0062	  Code	Length= 005A Public
+  m2 . . . . . . . . . . . . . .	L Near	 0071	  Code	
+  m1 . . . . . . . . . . . . . .	L Near	 00BB	  Code	
+CopyArr  . . . . . . . . . . . .	P Near	 0190	  Code	Length= 004C Public
+  M0 . . . . . . . . . . . . . .	L Near	 01A3	  Code	
+  M1 . . . . . . . . . . . . . .	L Near	 01AF	  Code	
+  M2 . . . . . . . . . . . . . .	L Near	 01C6	  Code	
+Initialization . . . . . . . . .	P Near	 0030	  Code	Length= 0024 Public
+KeyRead  . . . . . . . . . . . .	P Near	 0054	  Code	Length= 000E Public
+SumOut . . . . . . . . . . . . .	P Near	 0117	  Code	Length= 0079 Public
+VibrDestr  . . . . . . . . . . .	P Near	 01DC	  Code	Length= 0013 Public
+  VD1  . . . . . . . . . . . . .	L Near	 01DC	  Code	
+  VD2  . . . . . . . . . . . . .	L Near	 01E0	  Code	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+DataHexArr . . . . . . . . . . .	Byte	 0000	  Data	
+DataHexTabl  . . . . . . . . . .	Byte	 000A	  Data	
+DataTable  . . . . . . . . . . .	DWord	 0014	  Data	
+DisplayPort  . . . . . . . . . .	Number	 0002h	 
+DisplayPowerPort . . . . . . . .	Number	 0001h	 
+HexArr . . . . . . . . . . . . .	Byte	 0000	  Code	
+HexTabl  . . . . . . . . . . . .	Byte	 000A	  Code	
+InitDataEnd  . . . . . . . . . .	L Near	 0000	  InitData	
+InitDataStart  . . . . . . . . .	L Near	 0000	  InitData	
+KbdPort  . . . . . . . . . . . .	Number	 0000h	 
+MainLoop . . . . . . . . . . . .	L Near	 0205	  Code	
+NMax . . . . . . . . . . . . . .	Number	 0064h	 
+OldButton  . . . . . . . . . . .	Byte	 003B	  Data	
+Res  . . . . . . . . . . . . . .	Byte	 0030	  Data	
+RomSize  . . . . . . . . . . . .	Number	 1000h	 
+SelectedNumber . . . . . . . . .	DWord	 0037	  Data	
+Start  . . . . . . . . . . . . .	L Near	 01EF	  Code	
+StkTop . . . . . . . . . . . . .	Word	 0020	  Stk	
+Table  . . . . . . . . . . . . .	DWord	 0014	  Code	
+
+	   0 Warnings
+	   0 Errors
