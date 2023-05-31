@@ -8,9 +8,9 @@ CntPort = 0FDh ; 2
 CntPowerPort = 0FCh ; 3
 KbdPort = 0F7h ; 0
 IndPort = 0FBh ; 4
-ControlPort = 0FEh
+ControlPort = 0FEh ; 1
 
-NMax = 30
+NMax = 50
 
 IntTable   SEGMENT use16 AT 0
 ;Здесь размещаются адреса обработчиков прерываний
@@ -30,6 +30,7 @@ StopFlag db ?
 BrakFlag db ?
 ErrorFlag db ?
 SumFlag db ?
+SbrosFlag db ?
 Buffer dw ?
 Cnt DD ?
 CntAll DD ?
@@ -61,10 +62,8 @@ Code       SEGMENT use16
            ASSUME cs:Code,ds:Data,es:Data
 		   
 	HexArr DB 00h,01h,02h,03h,04h,05h,06h,07h,08h,09h
-	HexTabl DB 3Fh,0Ch,76h,5Eh,4Dh,5Bh,7Bh,0Eh,7Fh,5Fh
-	;Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h  
+	HexTabl DB 3Fh,0Ch,76h,5Eh,4Dh,5Bh,7Bh,0Eh,7Fh,5Fh 
 	Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h 
-	;Err DB 73h, 27h, 27h, 3fh, 27h
 	Err DB 27h, 3fh, 27h, 27h, 73h
 	
 Initialization PROC NEAR
@@ -73,6 +72,7 @@ Initialization PROC NEAR
 			mov BrakFlag, 00h
 			mov ErrorFlag, 00h
 			mov SumFlag, 00h
+			mov SbrosFlag, 00h
 			mov word ptr Cnt, ax
 			mov word ptr Cnt+2, ax
 			mov word ptr CntAll, ax
@@ -88,21 +88,14 @@ Initialization PROC NEAR
 			mov word ptr SelectedNumber+2, ax
 			mov TimeEndFlag, 0FFh
 			mov Buffer, 0100h
-			;mov DH, 1
-			;push DX
-			;mov AH, 1
-			;push AX
-			;xor ah, ah
-			;push CX
+			mov ax, Buffer
+			mov al, ah
+			out IndPort, al
+			xor ax, ax
 			RET
 Initialization ENDP
 
 Simul PROC NEAR
-			;mov 
-			;pop cx
-			;pop DX
-			;push AX
-			;mov AX, DX
 			MOV CX, AX
 			MOV AX, Buffer
 			
@@ -121,8 +114,7 @@ Timer0:	; Таймер
 			JNZ Timer1
 			MOV TimeEndFlag, 0FFh
 		
-Timer2: 	;MOV AL,DH
-			MOV AL,AH
+Timer2:		MOV AL,AH
 			CMP TimeEndFlag, 0FFh
 			JNZ Timer0
 		
@@ -130,25 +122,17 @@ Timer2: 	;MOV AL,DH
 			cmp AL, 80h
 			jne Timer3
 			mov SumFlag, 01h
-Timer3:		;ROL DH, 1
-			ROL AH, 1
+Timer3:		ROL AH, 1
 			
-			MOV word ptr Time, 0010h
+			MOV word ptr Time, 0050h
 			MOV word ptr Time+2, 0000h
 			JMP Timer0	
-Timer1: 	;MOV AL, DL
-			MOV Buffer, AX
+Timer1: 	MOV Buffer, AX
 			MOV AX, CX
-			;pop DX
-			;push AX
-			;mov AX, DX
-			;xor DX, DX
-			;mov AX, DX
-			;push CX
 			ret
 Simul ENDP 
 
-AddSymbol  	PROC  Near 
+ReadInput  	PROC  Near 
 			xor ah, ah
 			mov dx, ControlPort
 			in al, dx		
@@ -157,10 +141,12 @@ AddSymbol  	PROC  Near
 			cmp al, OldCntrl
 			jne m3 
 			
-m6:		   	cmp ErrorFlag, 01h
+m6:		   	; Пишу кнопку сброса снизу
+			cmp SbrosFlag, 01h
 			je m1
-			;cmp StopFlag, 00h
-			;je m4
+			cmp ErrorFlag, 01h
+			je m1
+			
 			jmp m4
 
 		   
@@ -172,8 +158,11 @@ m5:		   	inc   ah
 			shr   al, 1
 			jc m5
 			dec ah
-		   
-			cmp ah, 02h
+			
+			cmp ah, 03h
+			jne NoSbros
+			mov SbrosFlag, 01h
+NoSbros:	cmp ah, 02h
 			jb m11
 			xor BrakFlag, 01h
 			xor ah, ah
@@ -217,7 +206,7 @@ m2:
 			xlat
 			mov byte ptr SelectedNumber+3, al  		   
 m1:		   	RET           
-AddSymbol  	ENDP
+ReadInput  	ENDP
 
 AddCntAll  	PROC Near
 			cmp byte ptr CntAll+2, 01h
@@ -236,6 +225,8 @@ CntRet:		ret
 AddCntAll  	ENDP
 
 AccumulationSumm PROC Near
+			cmp SbrosFlag, 01h
+			je M7
 			cmp ErrorFlag, 01h
 			je M7
 		    cmp StopFlag, 01h
@@ -408,14 +399,22 @@ ErrorOut1:	mov al, dl
 ErrorRet:	ret
 ErrorOut ENDP
 
+Sbros PROC NEAR
+			cmp SbrosFlag, 00h
+			je SbrosRet
+			call Initialization
+			
+SbrosRet:	ret
+Sbros ENDP
+
 VibrDestr  PROC  NEAR
 VD1:       mov   ah,al       ;Сохранение исходного состояния
-           mov   bh,0        ;Сброс счётчика повторений
+           mov   ch,0        ;Сброс счётчика повторений
 VD2:       in    al,dx       ;Ввод текущего состояния
            cmp   ah,al       ;Текущее состояние=исходному?
            jne   VD1         ;Переход, если нет
-           inc   bh          ;Инкремент счётчика повторений
-           cmp   bh,NMax     ;Конец дребезга?
+           inc   ch          ;Инкремент счётчика повторений
+           cmp   ch,NMax     ;Конец дребезга?
            jne   VD2         ;Переход, если нет
            mov   al,ah       ;Восстановление местоположения данных
            ret
@@ -484,12 +483,13 @@ Start:
 			call CopyArr
 		   
 MainLoop:  ;call KeyRead
-			call AddSymbol
+			call ReadInput
 			call Simul
 			call AccumulationSumm
 			call SumOut
 			call CntOut
 			call ErrorOut
+			call Sbros
 			jmp MainLoop
 ;Здесь размещается код программы
 
