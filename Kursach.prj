@@ -1,7 +1,7 @@
-[SOURCE]=00000001,Kursach.asm
 [ARCH]=00000000,Kursach.arh
+[SOURCE]=00000001,Kursach.asm
 [ROMSIZE]=4
 [FREQ]=1000000000
 [FREEPINLEVEL]=1
 [WND.asm]=(208,208,2348,1102)C:\Users\Alexander\Desktop\Demis 3.5\Kursach\Kursach.asm
-[WND.arh]=(26,26,2166,920)C:\Users\Alexander\Desktop\Demis 3.5\Kursach\Kursach.arh
+[WND.arh]=(190,25,2330,919)C:\Users\Alexander\Desktop\Demis 3.5\Kursach\Kursach.arh

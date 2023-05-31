@@ -4,4 +4,4 @@ LINK : warning L4021: no stack segment
  00000H 00000H 00000H INITDATA               
  00000H 00FF4H 00FF5H CODE                   
 
-Program entry point at 0000:01EF
+Program entry point at 0000:041B
