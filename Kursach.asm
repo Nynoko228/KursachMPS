@@ -28,12 +28,11 @@ Data       SEGMENT use16 AT 40h
 	OldCntrl db    ?
 	StopFlag db ?
 	BrakFlag db ?
-	ErrorFlag db ?
+	OneHundredFlag db ?
 	SumFlag db ?
 	SbrosFlag db ?
 	Buffer dw ?
 	Cnt DD ?
-	CntAll DD ?
 	CntBrak DD ?
 	Time DD ?
 	TimeEndFlag DB ?
@@ -70,13 +69,11 @@ Initialization PROC NEAR
 			xor ax, ax
 			mov StopFlag, 01h
 			mov BrakFlag, 00h
-			mov ErrorFlag, 00h
+			mov OneHundredFlag, 00h
 			mov SumFlag, 00h
 			mov SbrosFlag, 00h
 			mov word ptr Cnt, ax
 			mov word ptr Cnt+2, ax
-			mov word ptr CntAll, ax
-			mov word ptr CntAll+2, ax
 			mov word ptr CntBrak, ax
 			mov word ptr CntBrak+2, ax
 			mov OldButton, al
@@ -101,7 +98,7 @@ Simul PROC NEAR
 			
 			cmp StopFlag, 01h
 			je Timer1
-			cmp ErrorFlag, 01h
+			cmp OneHundredFlag, 01h
 			je Timer1
 			jmp Timer2
 		
@@ -124,7 +121,7 @@ Timer2:		MOV AL,AH
 			mov SumFlag, 01h
 Timer3:		ROL AH, 1
 			
-			MOV word ptr Time, 0010h
+			MOV word ptr Time, 0007h
 			MOV word ptr Time+2, 0000h
 			JMP Timer0	
 Timer1: 	MOV Buffer, AX
@@ -143,7 +140,7 @@ ReadInput  	PROC  Near
 			
 m6:		   	cmp SbrosFlag, 01h
 			je m1
-			cmp ErrorFlag, 01h
+			cmp OneHundredFlag, 01h
 			je m1
 			
 			jmp m4
@@ -163,7 +160,7 @@ m5:		   	inc   ah
 			mov SbrosFlag, 01h
 NoSbros:	cmp ah, 02h
 			jb m11
-			xor BrakFlag, 01h
+			mov BrakFlag, 01h
 			xor ah, ah
 			jmp m6
 		   
@@ -201,26 +198,10 @@ ReadInput1:	add al, ah
 m1:		   	RET           
 ReadInput  	ENDP
 
-AddCntAll  	PROC Near
-			cmp byte ptr CntAll+2, 01h
-			jne Cnt1
-			mov ErrorFlag, 01h
-			mov StopFlag, 01h
-Cnt1:		mov ax, word ptr CntAll
-			inc ax
-			AAA
-			mov word ptr CntAll, ax
-			CMP byte ptr CntAll+1, 09h
-			JBE CntRet 
-			mov byte ptr CntAll+1, 00h
-			mov byte ptr CntAll+2, 01h
-CntRet:		ret
-AddCntAll  	ENDP
-
 AccumulationSumm PROC Near
 			cmp SbrosFlag, 01h
 			je M7
-			cmp ErrorFlag, 01h
+			cmp OneHundredFlag, 01h
 			je M7
 		    cmp StopFlag, 01h
 			je M7
@@ -236,13 +217,15 @@ AccumulationSumm PROC Near
 			JZ M7
 
 		
-M8:			call AddCntAll
+M8:			;call AddCntAll
 			mov ax, word ptr Cnt
 			inc ax
 			AAA
 			mov word ptr Cnt, ax
 			CMP byte ptr Cnt+1, 09h
 			JBE M9 
+			mov StopFlag, 01h
+			mov OneHundredFlag, 01h
 			mov byte ptr Cnt+1, 00h
 			mov byte ptr Cnt+2, 01h
 			
@@ -264,7 +247,8 @@ AccSum1:	mov ax, word ptr [SI]
 			INC [Res+5]
 			JMP M7
 			
-M10:		call AddCntAll
+M10:		;call AddCntAll
+			mov BrakFlag, 00h
 			mov SumFlag, 00h
 			mov ax, word ptr CntBrak
 			inc ax
@@ -282,9 +266,6 @@ AccumulationSumm ENDP
 
 
 SumOut     PROC NEAR  			;Выводим сумму на индикаторы
-			cmp ErrorFlag, 01h
-			je SumOutRet
-			
 			xor cx, cx
 			mov cl, 01h
             lea   bx, DataHexTabl 
@@ -350,7 +331,7 @@ CntOut2:	mov ah, [SI]
 CntOut 	   ENDP
 
 ErrorOut Proc Near
-			cmp ErrorFlag, 00h
+			cmp OneHundredFlag, 00h
 			je ErrorRet
 			
 			xor al, al
@@ -467,7 +448,6 @@ MainLoop:	call ReadInput
 			call AccumulationSumm
 			call SumOut
 			call CntOut
-			call ErrorOut
 			call Sbros
 			jmp MainLoop
 ;Здесь размещается код программы
