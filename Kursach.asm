@@ -217,8 +217,7 @@ AccumulationSumm PROC Near
 			JZ M7
 
 		
-M8:			;call AddCntAll
-			mov ax, word ptr Cnt
+M8:			mov ax, word ptr Cnt
 			inc ax
 			AAA
 			mov word ptr Cnt, ax
@@ -247,8 +246,7 @@ AccSum1:	mov ax, word ptr [SI]
 			INC [Res+5]
 			JMP M7
 			
-M10:		;call AddCntAll
-			mov BrakFlag, 00h
+M10:		mov BrakFlag, 00h
 			mov SumFlag, 00h
 			mov ax, word ptr CntBrak
 			inc ax
