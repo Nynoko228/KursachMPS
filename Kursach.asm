@@ -10,7 +10,7 @@ KbdPort = 0F7h ; 0
 IndPort = 0FBh ; 4
 ControlPort = 0FEh ; 1
 
-NMax = 50
+NMax = 70
 
 IntTable   SEGMENT use16 AT 0
 ;Здесь размещаются адреса обработчиков прерываний
@@ -403,7 +403,7 @@ Sbros PROC NEAR
 			cmp SbrosFlag, 00h
 			je SbrosRet
 			call Initialization
-			
+			call CopyArr
 SbrosRet:	ret
 Sbros ENDP
 
