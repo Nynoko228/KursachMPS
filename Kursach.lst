@@ -1,9 +1,9 @@
-Microsoft (R) Macro Assembler Version 6.14.8444		    05/31/23 01:12:15
+Microsoft (R) Macro Assembler Version 6.14.8444		    05/31/23 18:08:47
 Kursach.asm						     Page 1 - 1
 
 
 				.386
-				;á†§†©‚• Æ°ÍÒ¨ èáì ¢ °†©‚†Â
+				;–ó–∞–¥–∞–π—Ç–µ –æ–±—ä—ë–º –ü–ó–£ –≤ –±–∞–π—Ç–∞—Ö
  = 1000				RomSize    EQU   4096
 
  = 00FD				SumPort = 0FDh ; 2
@@ -12,16 +12,16 @@ Kursach.asm						     Page 1 - 1
  = 00FC				CntPowerPort = 0FCh ; 3
  = 00F7				KbdPort = 0F7h ; 0
  = 00FB				IndPort = 0FBh ; 4
- = 00FE				ControlPort = 0FEh
+ = 00FE				ControlPort = 0FEh ; 1
 
- = 001E				NMax = 30
+ = 0046				NMax = 70
 
  0000				IntTable   SEGMENT use16 AT 0
-				;á§•·Ï ‡†ß¨•È†Ó‚·Ô †§‡•·† Æ°‡†°Æ‚Á®™Æ¢ Ø‡•‡Î¢†≠®©
+				;–ó–¥–µ—Å—å —Ä–∞–∑–º–µ—â–∞—é—Ç—Å—è –∞–¥—Ä–µ—Å–∞ –æ–±—Ä–∞–±–æ—Ç—á–∏–∫–æ–≤ –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–π
  0000				IntTable   ENDS
 
  0000				Data       SEGMENT use16 AT 40h
-				;á§•·Ï ‡†ß¨•È†Ó‚·Ô ÆØ®·†≠®Ô Ø•‡•¨•≠≠ÎÂ
+				;–ó–¥–µ—Å—å —Ä–∞–∑–º–µ—â–∞—é—Ç—Å—è –æ–ø–∏—Å–∞–Ω–∏—è –ø–µ—Ä–µ–º–µ–Ω–Ω—ã—Ö
  0000  000A [			DataHexArr db 10 dup(?) 
         00
        ]
@@ -44,18 +44,19 @@ Kursach.asm						     Page 1 - 1
  0042 00			BrakFlag db ?
  0043 00			ErrorFlag db ?
  0044 00			SumFlag db ?
- 0045 0000			Buffer dw ?
- 0047 00000000			Cnt DD ?
- 004B 00000000			CntAll DD ?
- 004F 00000000			CntBrak DD ?
- 0053 00000000			Time DD ?
- 0057 00			TimeEndFlag DB ?
- 0058				Data       ENDS
+ 0045 00			SbrosFlag db ?
+ 0046 0000			Buffer dw ?
+ 0048 00000000			Cnt DD ?
+ 004C 00000000			CntAll DD ?
+ 0050 00000000			CntBrak DD ?
+ 0054 00000000			Time DD ?
+ 0058 00			TimeEndFlag DB ?
+ 0059				Data       ENDS
 
 
-				;á†§†©‚• ≠•Æ°ÂÆ§®¨Î© †§‡•· ·‚•™†
+				;–ó–∞–¥–∞–π—Ç–µ –Ω–µ–æ–±—Ö–æ–¥–∏–º—ã–π –∞–¥—Ä–µ—Å —Å—Ç–µ–∫–∞
  0000				Stk        SEGMENT use16 AT 2000h
-				;á†§†©‚• ≠•Æ°ÂÆ§®¨Î© ‡†ß¨•‡ ·‚•™†
+				;–ó–∞–¥–∞–π—Ç–µ –Ω–µ–æ–±—Ö–æ–¥–∏–º—ã–π —Ä–∞–∑–º–µ—Ä —Å—Ç–µ–∫–∞
  0000  0010 [			           DW    16 dup (?)
         0000
        ]
@@ -64,7 +65,7 @@ Kursach.asm						     Page 1 - 1
 
  0000				InitData   SEGMENT use16
  0000				InitDataStart:
-				;á§•·Ï ‡†ß¨•È†Ó‚·Ô ÆØ®·†≠®Ô ™Æ≠·‚†≠‚
+				;–ó–¥–µ—Å—å —Ä–∞–∑–º–µ—â–∞—é—Ç—Å—è –æ–ø–∏—Å–∞–Ω–∏—è –∫–æ–Ω—Å—Ç–∞–Ω—Ç
 
 
 
@@ -72,20 +73,19 @@ Kursach.asm						     Page 1 - 1
  0000				InitData   ENDS
 
  0000				Code       SEGMENT use16
-				;á§•·Ï ‡†ß¨•È†Ó‚·Ô ÆØ®·†≠®Ô ™Æ≠·‚†≠‚
+				;–ó–¥–µ—Å—å —Ä–∞–∑–º–µ—â–∞—é—Ç—Å—è –æ–ø–∏—Å–∞–Ω–∏—è –∫–æ–Ω—Å—Ç–∞–Ω—Ç
 
 				           ASSUME cs:Code,ds:Data,es:Data
 						   
  0000 00 01 02 03 04 05			HexArr DB 00h,01h,02h,03h,04h,05h,06h,07h,08h,09h
        06 07 08 09
- 000A 3F 0C 76 5E 4D 5B			HexTabl DB 3Fh,0Ch,76h,5Eh,4Dh,5Bh,7Bh,0Eh,7Fh,5Fh
+ 000A 3F 0C 76 5E 4D 5B			HexTabl DB 3Fh,0Ch,76h,5Eh,4Dh,5Bh,7Bh,0Eh,7Fh,5Fh 
        7B 0E 7F 5F
-					;Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h  
  0014 00000500 00010000			Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h 
        00020000 00050000
        01000000 02000000
        05000000
- 0030 73 27 27 3F 27			Err DB 73h, 27h, 27h, 3fh, 27h
+ 0030 27 3F 27 27 73			Err DB 27h, 3fh, 27h, 27h, 73h
 					
  0035				Initialization PROC NEAR
  0035  33 C0						xor ax, ax
@@ -93,518 +93,435 @@ Kursach.asm						     Page 1 - 1
  003C  C6 06 0042 R 00					mov BrakFlag, 00h
  0041  C6 06 0043 R 00					mov ErrorFlag, 00h
  0046  C6 06 0044 R 00					mov SumFlag, 00h
- 004B  A3 0047 R					mov word ptr Cnt, ax
- 004E  A3 0049 R					mov word ptr Cnt+2, ax
- 0051  A3 004B R					mov word ptr CntAll, ax
- 0054  A3 004D R					mov word ptr CntAll+2, ax
- 0057  A3 004F R					mov word ptr CntBrak, ax
- 005A  A3 0051 R					mov word ptr CntBrak+2, ax
- 005D  A2 003F R					mov OldButton, al
- 0060  A2 0040 R					mov OldCntrl, al
- 0063  A3 0035 R			        mov word ptr Res, ax
- 0066  A3 0037 R					mov word ptr Res+2, ax
- 0069  A3 0039 R					mov word ptr Res+4, ax
- 006C  A3 003B R					mov word ptr SelectedNumber, ax
- 006F  A3 003D R					mov word ptr SelectedNumber+2, ax
- 0072  C6 06 0057 R FF					mov TimeEndFlag, 0FFh
- 0077  C7 06 0045 R 0100				mov Buffer, 0100h
-							;mov DH, 1
-							;push DX
-							;mov AH, 1
-							;push AX
-							;xor ah, ah
-							;push CX
- 007D  C3						RET
- 007E				Initialization ENDP
+ 004B  C6 06 0045 R 00					mov SbrosFlag, 00h
+ 0050  A3 0048 R					mov word ptr Cnt, ax
+ 0053  A3 004A R					mov word ptr Cnt+2, ax
+ 0056  A3 004C R					mov word ptr CntAll, ax
+ 0059  A3 004E R					mov word ptr CntAll+2, ax
+ 005C  A3 0050 R					mov word ptr CntBrak, ax
+ 005F  A3 0052 R					mov word ptr CntBrak+2, ax
+ 0062  A2 003F R					mov OldButton, al
+ 0065  A2 0040 R					mov OldCntrl, al
+ 0068  A3 0035 R			        mov word ptr Res, ax
+ 006B  A3 0037 R					mov word ptr Res+2, ax
+ 006E  A3 0039 R					mov word ptr Res+4, ax
+ 0071  A3 003B R					mov word ptr SelectedNumber, ax
+ 0074  A3 003D R					mov word ptr SelectedNumber+2, ax
+ 0077  C6 06 0058 R FF					mov TimeEndFlag, 0FFh
+ 007C  C7 06 0046 R 0100				mov Buffer, 0100h
+ 0082  A1 0046 R					mov ax, Buffer
+ 0085  8A C4						mov al, ah
+ 0087  E6 FB						out IndPort, al
+ 0089  33 C0						xor ax, ax
+ 008B  C3						RET
+ 008C				Initialization ENDP
 
- 007E				Simul PROC NEAR
-							;mov 
-							;pop cx
-							;pop DX
-							;push AX
-							;mov AX, DX
- 007E  8B C8						MOV CX, AX
- 0080  A1 0045 R					MOV AX, Buffer
+ 008C				Simul PROC NEAR
+ 008C  8B C8						MOV CX, AX
+ 008E  A1 0046 R					MOV AX, Buffer
 							
- 0083  80 3E 0041 R 01					cmp StopFlag, 01h
- 0088  74 4B						je Timer1
- 008A  80 3E 0043 R 01					cmp ErrorFlag, 01h
- 008F  74 44						je Timer1
- 0091  EB 1E						jmp Timer2
+ 0091  80 3E 0041 R 01					cmp StopFlag, 01h
+ 0096  74 4B						je Timer1
+ 0098  80 3E 0043 R 01					cmp ErrorFlag, 01h
+ 009D  74 44						je Timer1
+ 009F  EB 1E						jmp Timer2
 						
- 0093				Timer0:	; í†©¨•‡
- 0093  83 2E 0053 R 01					SUB word ptr Time, 1
- 0098  83 1E 0055 R 00					SBB word ptr Time+2, 0
- 009D  8B 36 0053 R					MOV SI, word ptr Time
- 00A1  0B 36 0055 R					OR SI, word ptr Time+2
- 00A5  C6 06 0057 R 00					MOV TimeEndFlag, 0
- 00AA  75 29						JNZ Timer1
- 00AC  C6 06 0057 R FF					MOV TimeEndFlag, 0FFh
+ 00A1				Timer0:	; –¢–∞–π–º–µ—Ä
+ 00A1  83 2E 0054 R 01					SUB word ptr Time, 1
+ 00A6  83 1E 0056 R 00					SBB word ptr Time+2, 0
+ 00AB  8B 36 0054 R					MOV SI, word ptr Time
+ 00AF  0B 36 0056 R					OR SI, word ptr Time+2
+ 00B3  C6 06 0058 R 00					MOV TimeEndFlag, 0
+ 00B8  75 29						JNZ Timer1
+ 00BA  C6 06 0058 R FF					MOV TimeEndFlag, 0FFh
 						
- 00B1				Timer2: 	;MOV AL,DH
- 00B1  8A C4						MOV AL,AH
- 00B3  80 3E 0057 R FF					CMP TimeEndFlag, 0FFh
- 00B8  75 D9						JNZ Timer0
+ 00BF  8A C4			Timer2:		MOV AL,AH
+ 00C1  80 3E 0058 R FF					CMP TimeEndFlag, 0FFh
+ 00C6  75 D9						JNZ Timer0
 						
- 00BA  E6 FB						Out IndPort, AL
- 00BC  3C 80						cmp AL, 80h
- 00BE  75 05						jne Timer3
- 00C0  C6 06 0044 R 01					mov SumFlag, 01h
- 00C5				Timer3:		;ROL DH, 1
- 00C5  D0 C4						ROL AH, 1
+ 00C8  E6 FB						Out IndPort, AL
+ 00CA  3C 80						cmp AL, 80h
+ 00CC  75 05						jne Timer3
+ 00CE  C6 06 0044 R 01					mov SumFlag, 01h
+ 00D3  D0 C4			Timer3:		ROL AH, 1
 							
- 00C7  C7 06 0053 R 0010				MOV word ptr Time, 0010h
- 00CD  C7 06 0055 R 0000				MOV word ptr Time+2, 0000h
- 00D3  EB BE						JMP Timer0	
- 00D5				Timer1: 	;MOV AL, DL
- 00D5  A3 0045 R					MOV Buffer, AX
- 00D8  8B C1						MOV AX, CX
-							;pop DX
-							;push AX
-							;mov AX, DX
-							;xor DX, DX
-							;mov AX, DX
-							;push CX
- 00DA  C3						ret
- 00DB				Simul ENDP 
+ 00D5  C7 06 0054 R 0050				MOV word ptr Time, 0050h
+ 00DB  C7 06 0056 R 0000				MOV word ptr Time+2, 0000h
+ 00E1  EB BE						JMP Timer0	
+ 00E3  A3 0046 R		Timer1: 	MOV Buffer, AX
+ 00E6  8B C1						MOV AX, CX
+ 00E8  C3						ret
+ 00E9				Simul ENDP 
 
- 00DB				AddSymbol  	PROC  Near 
- 00DB  32 E4						xor ah, ah
- 00DD  BA 00FE						mov dx, ControlPort
- 00E0  EC						in al, dx		
- 00E1  E8 02BE						call VibrDestr
- 00E4  32 E4						xor ah, ah
- 00E6  3A 06 0040 R					cmp al, OldCntrl
- 00EA  75 09						jne m3 
+ 00E9				ReadInput  	PROC  Near 
+ 00E9  32 E4						xor ah, ah
+ 00EB  BA 00FE						mov dx, ControlPort
+ 00EE  EC						in al, dx		
+ 00EF  E8 0248						call VibrDestr
+ 00F2  32 E4						xor ah, ah
+ 00F4  3A 06 0040 R					cmp al, OldCntrl
+ 00F8  75 12						jne m3 
 							
- 00EC  80 3E 0043 R 01		m6:		   	cmp ErrorFlag, 01h
- 00F1  74 72						je m1
-							;cmp StopFlag, 00h
-							;je m4
- 00F3  EB 25						jmp m4
+ 00FA				m6:		   	; –ü–∏—à—É –∫–Ω–æ–ø–∫—É —Å–±—Ä–æ—Å–∞ —Å–Ω–∏–∑—É
+ 00FA  80 3E 0045 R 01					cmp SbrosFlag, 01h
+ 00FF  0F 84 0083					je m1
+ 0103  80 3E 0043 R 01					cmp ErrorFlag, 01h
+ 0108  74 7C						je m1
+							
+ 010A  EB 2F						jmp m4
 
 						   
- 00F5  A2 0040 R		m3:        	mov OldCntrl, al
- 00F8  3C FF						cmp al, 0ffh
- 00FA  74 F0						je m6
+ 010C  A2 0040 R		m3:        	mov OldCntrl, al
+ 010F  3C FF						cmp al, 0ffh
+ 0111  74 E7						je m6
 							
- 00FC  FE C4			m5:		   	inc   ah
- 00FE  D0 E8						shr   al, 1
- 0100  72 FA						jc m5
- 0102  FE CC						dec ah
+ 0113  FE C4			m5:		   	inc   ah
+ 0115  D0 E8						shr   al, 1
+ 0117  72 FA						jc m5
+ 0119  FE CC						dec ah
+							
+ 011B  80 FC 03						cmp ah, 03h
+ 011E  75 05						jne NoSbros
+ 0120  C6 06 0045 R 01					mov SbrosFlag, 01h
+ 0125  80 FC 02			NoSbros:	cmp ah, 02h
+ 0128  72 09						jb m11
+ 012A  80 36 0042 R 01					xor BrakFlag, 01h
+ 012F  32 E4						xor ah, ah
+ 0131  EB C7						jmp m6
 						   
- 0104  80 FC 02						cmp ah, 02h
- 0107  72 09						jb m11
- 0109  80 36 0042 R 01					xor BrakFlag, 01h
- 010E  32 E4						xor ah, ah
- 0110  EB DA						jmp m6
+ 0133  88 26 0041 R		m11:	   	mov StopFlag, ah
+ 0137  32 E4						xor ah, ah
+ 0139  EB BF						jmp m6
 						   
- 0112  88 26 0041 R		m11:	   	mov StopFlag, ah
- 0116  32 E4						xor ah, ah
- 0118  EB D2						jmp m6
-						   
- 011A  BA 00F7			m4:		   	mov dx, KbdPort
- 011D  EC						in al, dx		
- 011E  E8 0281						call VibrDestr
- 0121  32 E4						xor ah, ah
- 0123  3A 06 003F R					cmp al, OldButton
- 0127  74 3C						je m1
- 0129  A2 003F R					mov OldButton, al
- 012C  3C FF						cmp   al, 0ffh
- 012E  74 35						je    m1   ;Ö·´® ≠•‚ ·®¨¢Æ´Æ¢ §´Ô §Æ°†¢´•≠®Ô (≠• ≠†¶†‚† ≠® Æ§≠† ®ß ™≠ÆØÆ™)
- 0130				m2:       
- 0130  FE C4						inc   ah
- 0132  D0 E8						shr   al, 1
- 0134  72 FA						jc m2
- 0136  FE CC						dec ah
+ 013B  BA 00F7			m4:		   	mov dx, KbdPort
+ 013E  EC						in al, dx		
+ 013F  E8 01F8						call VibrDestr
+ 0142  32 E4						xor ah, ah
+ 0144  3A 06 003F R					cmp al, OldButton
+ 0148  74 3C						je m1
+ 014A  A2 003F R					mov OldButton, al
+ 014D  3C FF						cmp   al, 0ffh
+ 014F  74 35						je    m1   ;–ï—Å–ª–∏ –Ω–µ—Ç —Å–∏–º–≤–æ–ª–æ–≤ –¥–ª—è –¥–æ–±–∞–≤–ª–µ–Ω–∏—è (–Ω–µ –Ω–∞–∂–∞—Ç–∞ –Ω–∏ –æ–¥–Ω–∞ –∏–∑ –∫–Ω–æ–ø–æ–∫)
+ 0151				m2:       
+ 0151  FE C4						inc   ah
+ 0153  D0 E8						shr   al, 1
+ 0155  72 FA						jc m2
+ 0157  FE CC						dec ah
 				           
- 0138  32 C0						xor al, al
- 013A  8D 1E 0014 R					lea BX, Table
- 013E  C0 E4 02						shl ah, 2
- 0141  02 C4						add al, ah
- 0143  D7						xlat
- 0144  A2 003B R					mov byte ptr SelectedNumber, al 
- 0147  8D 1E 0015 R					lea BX, Table+1
- 014B  02 C4						add al, ah
- 014D  D7						xlat
- 014E  A2 003C R					mov byte ptr SelectedNumber+1, al  
- 0151  8D 1E 0016 R					lea BX, Table+2
- 0155  02 C4						add al, ah
- 0157  D7						xlat
- 0158  A2 003D R					mov byte ptr SelectedNumber+2, al  
- 015B  8D 1E 0017 R					lea BX, Table+3
- 015F  02 C4						add al, ah
- 0161  D7						xlat
- 0162  A2 003E R					mov byte ptr SelectedNumber+3, al  		   
- 0165  C3			m1:		   	RET           
- 0166				AddSymbol  	ENDP
+ 0159  32 C0						xor al, al
+ 015B  8D 1E 0014 R					lea BX, Table
+ 015F  C0 E4 02						shl ah, 2
+ 0162  02 C4						add al, ah
+ 0164  D7						xlat
+ 0165  A2 003B R					mov byte ptr SelectedNumber, al 
+ 0168  8D 1E 0015 R					lea BX, Table+1
+ 016C  02 C4						add al, ah
+ 016E  D7						xlat
+ 016F  A2 003C R					mov byte ptr SelectedNumber+1, al  
+ 0172  8D 1E 0016 R					lea BX, Table+2
+ 0176  02 C4						add al, ah
+ 0178  D7						xlat
+ 0179  A2 003D R					mov byte ptr SelectedNumber+2, al  
+ 017C  8D 1E 0017 R					lea BX, Table+3
+ 0180  02 C4						add al, ah
+ 0182  D7						xlat
+ 0183  A2 003E R					mov byte ptr SelectedNumber+3, al  		   
+ 0186  C3			m1:		   	RET           
+ 0187				ReadInput  	ENDP
 
- 0166				AddCntAll  	PROC Near
- 0166  80 3E 004D R 01					cmp byte ptr CntAll+2, 01h
- 016B  75 0A						jne Cnt1
- 016D  C6 06 0043 R 01					mov ErrorFlag, 01h
- 0172  C6 06 0041 R 01					mov StopFlag, 01h
- 0177  A1 004B R		Cnt1:		mov ax, word ptr CntAll
- 017A  40						inc ax
- 017B  37						AAA
- 017C  A3 004B R					mov word ptr CntAll, ax
- 017F  80 3E 004C R 09					CMP byte ptr CntAll+1, 09h
- 0184  76 0A						JBE CntRet 
- 0186  C6 06 004C R 00					mov byte ptr CntAll+1, 00h
- 018B  C6 06 004D R 01					mov byte ptr CntAll+2, 01h
- 0190  C3			CntRet:		ret
- 0191				AddCntAll  	ENDP
+ 0187				AddCntAll  	PROC Near
+ 0187  80 3E 004E R 01					cmp byte ptr CntAll+2, 01h
+ 018C  75 0A						jne Cnt1
+ 018E  C6 06 0043 R 01					mov ErrorFlag, 01h
+ 0193  C6 06 0041 R 01					mov StopFlag, 01h
+ 0198  A1 004C R		Cnt1:		mov ax, word ptr CntAll
+ 019B  40						inc ax
+ 019C  37						AAA
+ 019D  A3 004C R					mov word ptr CntAll, ax
+ 01A0  80 3E 004D R 09					CMP byte ptr CntAll+1, 09h
+ 01A5  76 0A						JBE CntRet 
+ 01A7  C6 06 004D R 00					mov byte ptr CntAll+1, 00h
+ 01AC  C6 06 004E R 01					mov byte ptr CntAll+2, 01h
+ 01B1  C3			CntRet:		ret
+ 01B2				AddCntAll  	ENDP
 
- 0191				AccumulationSumm PROC Near
- 0191  80 3E 0043 R 01					cmp ErrorFlag, 01h
- 0196  0F 84 00AB					je M7
- 019A  80 3E 0041 R 01				    cmp StopFlag, 01h
- 019F  0F 84 00A2					je M7
- 01A3  80 3E 0044 R 00					cmp SumFlag, 00h
- 01A8  0F 84 0099					je M7
+ 01B2				AccumulationSumm PROC Near
+ 01B2  80 3E 0045 R 01					cmp SbrosFlag, 01h
+ 01B7  0F 84 00B4					je M7
+ 01BB  80 3E 0043 R 01					cmp ErrorFlag, 01h
+ 01C0  0F 84 00AB					je M7
+ 01C4  80 3E 0041 R 01				    cmp StopFlag, 01h
+ 01C9  0F 84 00A2					je M7
+ 01CD  80 3E 0044 R 00					cmp SumFlag, 00h
+ 01D2  0F 84 0099					je M7
 							
- 01AC  33 C0						xor ax,ax
- 01AE  80 3E 0042 R 01					cmp BrakFlag, 01h
- 01B3  74 6F						je M10
- 01B5  83 3E 003D R 00					cmp word ptr SelectedNumber+2, 0
- 01BA  75 09						JNZ M8
- 01BC  83 3E 003B R 00					cmp word ptr SelectedNumber, 0
- 01C1  0F 84 0080					JZ M7
+ 01D6  33 C0						xor ax,ax
+ 01D8  80 3E 0042 R 01					cmp BrakFlag, 01h
+ 01DD  74 6F						je M10
+ 01DF  83 3E 003D R 00					cmp word ptr SelectedNumber+2, 0
+ 01E4  75 09						JNZ M8
+ 01E6  83 3E 003B R 00					cmp word ptr SelectedNumber, 0
+ 01EB  0F 84 0080					JZ M7
 
 						
- 01C5  E8 FF9E			M8:			call AddCntAll
- 01C8  A1 0047 R					mov ax, word ptr Cnt
- 01CB  40						inc ax
- 01CC  37						AAA
- 01CD  A3 0047 R					mov word ptr Cnt, ax
- 01D0  80 3E 0048 R 09					CMP byte ptr Cnt+1, 09h
- 01D5  76 0A						JBE M9 
- 01D7  C6 06 0048 R 00					mov byte ptr Cnt+1, 00h
- 01DC  C6 06 0049 R 01					mov byte ptr Cnt+2, 01h
+ 01EF  E8 FF95			M8:			call AddCntAll
+ 01F2  A1 0048 R					mov ax, word ptr Cnt
+ 01F5  40						inc ax
+ 01F6  37						AAA
+ 01F7  A3 0048 R					mov word ptr Cnt, ax
+ 01FA  80 3E 0049 R 09					CMP byte ptr Cnt+1, 09h
+ 01FF  76 0A						JBE M9 
+ 0201  C6 06 0049 R 00					mov byte ptr Cnt+1, 00h
+ 0206  C6 06 004A R 01					mov byte ptr Cnt+2, 01h
 							
- 01E1  C6 06 0044 R 00		M9:			mov SumFlag, 00h
- 01E6  A1 0035 R					mov ax, word ptr Res
- 01E9  02 06 003B R					ADD al, byte ptr SelectedNumber
- 01ED  37						AAA
- 01EE  A3 0035 R					mov word ptr Res, ax
+ 020B  C6 06 0044 R 00		M9:			mov SumFlag, 00h
+ 0210  A1 0035 R					mov ax, word ptr Res
+ 0213  02 06 003B R					ADD al, byte ptr SelectedNumber
+ 0217  37						AAA
+ 0218  A3 0035 R					mov word ptr Res, ax
 
 							
- 01F1  A1 0036 R					mov ax, word ptr Res+1
- 01F4  02 06 003C R					ADD al, byte ptr SelectedNumber+1
- 01F8  37						AAA
- 01F9  A3 0036 R					mov word ptr Res+1, ax
+ 021B  A1 0036 R					mov ax, word ptr Res+1
+ 021E  02 06 003C R					ADD al, byte ptr SelectedNumber+1
+ 0222  37						AAA
+ 0223  A3 0036 R					mov word ptr Res+1, ax
 
 							
- 01FC  A1 0037 R					mov ax, word ptr Res+2
- 01FF  02 06 003D R					ADD al, byte ptr SelectedNumber+2
- 0203  37						AAA
- 0204  A3 0037 R					mov word ptr Res+2, ax
+ 0226  A1 0037 R					mov ax, word ptr Res+2
+ 0229  02 06 003D R					ADD al, byte ptr SelectedNumber+2
+ 022D  37						AAA
+ 022E  A3 0037 R					mov word ptr Res+2, ax
 
 							
- 0207  A1 0038 R					mov ax, word ptr Res+3
- 020A  02 06 003E R					ADD al, byte ptr SelectedNumber+3
- 020E  37						AAA
- 020F  A3 0038 R					mov word ptr Res+3, ax
+ 0231  A1 0038 R					mov ax, word ptr Res+3
+ 0234  02 06 003E R					ADD al, byte ptr SelectedNumber+3
+ 0238  37						AAA
+ 0239  A3 0038 R					mov word ptr Res+3, ax
 
- 0212  80 3E 0039 R 09					CMP Res+4, 09h
- 0217  76 2C						JBE M7
- 0219  C6 06 0039 R 00					mov Res+4, 0h
- 021E  FE 06 003A R					INC [Res+5]
- 0222  EB 21						JMP M7
+ 023C  80 3E 0039 R 09					CMP Res+4, 09h
+ 0241  76 2C						JBE M7
+ 0243  C6 06 0039 R 00					mov Res+4, 0h
+ 0248  FE 06 003A R					INC [Res+5]
+ 024C  EB 21						JMP M7
 							
- 0224  E8 FF3F			M10:		call AddCntAll
- 0227  C6 06 0044 R 00					mov SumFlag, 00h
- 022C  A1 004F R					mov ax, word ptr CntBrak
- 022F  40						inc ax
- 0230  37						AAA
- 0231  A3 004F R					mov word ptr CntBrak, ax
- 0234  80 3E 0050 R 09					CMP byte ptr CntBrak+1, 09h
- 0239  76 0A						JBE M7 
- 023B  C6 06 0050 R 00					mov byte ptr CntBrak+1, 00h
- 0240  C6 06 0051 R 01					mov byte ptr CntBrak+2, 01h
+ 024E  E8 FF36			M10:		call AddCntAll
+ 0251  C6 06 0044 R 00					mov SumFlag, 00h
+ 0256  A1 0050 R					mov ax, word ptr CntBrak
+ 0259  40						inc ax
+ 025A  37						AAA
+ 025B  A3 0050 R					mov word ptr CntBrak, ax
+ 025E  80 3E 0051 R 09					CMP byte ptr CntBrak+1, 09h
+ 0263  76 0A						JBE M7 
+ 0265  C6 06 0051 R 00					mov byte ptr CntBrak+1, 00h
+ 026A  C6 06 0052 R 01					mov byte ptr CntBrak+2, 01h
 							
- 0245  8B 2E 003B R		M7:			mov bp, word ptr SelectedNumber
- 0249  81 E5 00FF					and bp, 00FFh
- 024D  C3						ret
- 024E				AccumulationSumm ENDP
+ 026F  8B 2E 003B R		M7:			mov bp, word ptr SelectedNumber
+ 0273  81 E5 00FF					and bp, 00FFh
+ 0277  C3						ret
+ 0278				AccumulationSumm ENDP
 
 
- 024E				SumOut     PROC NEAR
- 024E  80 3E 0043 R 01					cmp ErrorFlag, 01h
- 0253  74 78						je SumOutRet
- 0255  8D 1E 000A R		            lea   bx, DataHexTabl 
- 0259  8A 26 0035 R		            mov   ah, Res
- 025D  8A C4			            mov   al,ah               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 025F  D7			            xlat
- 0260  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 0262  E6 FD			            out   SumPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 0264  B0 01			            mov   al, 01h            
- 0266  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 0268  B0 00			            mov   al,00h             
- 026A  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
- 026C  8A 26 0036 R				    mov   ah, Res+1       ;ß†£‡„¶†•¨ ¢ ‡•£®·‚‡Î
- 0270  8A C4			            mov   al, ah              ;‚•™„È•• ß≠†Á•≠®• ·„¨¨Î                 
- 0272  D7			            xlat
- 0273  F6 D0					    not al         ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ¨´†§Ë•© Ê®‰‡Î
- 0275  E6 FD			            out   SumPort, al    ;ÇÎ¢Æ§®¨ ≠† ¨´†§Ë®© ®≠§®™†‚Æ‡            
- 0277  B0 02			            mov   al, 02h            
- 0279  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ¨´†§Ë®© ®≠§®™†‚Æ‡
- 027B  B0 00			            mov   al,00h
- 027D  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
- 027F  8A 26 0037 R				    mov   ah, Res+2       ;ß†£‡„¶†•¨ ¢ ‡•£®·‚‡Î
- 0283  8A C4			            mov   al, ah              ;‚•™„È•• ß≠†Á•≠®• ·„¨¨Î                 
- 0285  D7			            xlat
- 0286  F6 D0					    not al         ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ¨´†§Ë•© Ê®‰‡Î
- 0288  E6 FD			            out   SumPort, al    ;ÇÎ¢Æ§®¨ ≠† ¨´†§Ë®© ®≠§®™†‚Æ‡            
- 028A  B0 04			            mov   al, 04h            
- 028C  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ¨´†§Ë®© ®≠§®™†‚Æ‡
- 028E  B0 00			            mov   al,00h
- 0290  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
- 0292  8A 26 0038 R				    mov   ah, Res+3       ;ß†£‡„¶†•¨ ¢ ‡•£®·‚‡Î
- 0296  8A C4			            mov   al, ah              ;‚•™„È•• ß≠†Á•≠®• ·„¨¨Î                 
- 0298  D7			            xlat
- 0299  F6 D0					    not al         ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ¨´†§Ë•© Ê®‰‡Î
- 029B  E6 FD			            out   SumPort, al    ;ÇÎ¢Æ§®¨ ≠† ¨´†§Ë®© ®≠§®™†‚Æ‡            
- 029D  B0 08			            mov   al, 08h            
- 029F  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ¨´†§Ë®© ®≠§®™†‚Æ‡
- 02A1  B0 00			            mov   al,00h
- 02A3  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
- 02A5  8A 26 0039 R				    mov   ah, Res+4       ;ß†£‡„¶†•¨ ¢ ‡•£®·‚‡Î
- 02A9  8A C4			            mov   al, ah              ;‚•™„È•• ß≠†Á•≠®• ·„¨¨Î                 
- 02AB  D7			            xlat
- 02AC  F6 D0					    not al         ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ¨´†§Ë•© Ê®‰‡Î
- 02AE  E6 FD			            out   SumPort, al    ;ÇÎ¢Æ§®¨ ≠† ¨´†§Ë®© ®≠§®™†‚Æ‡            
- 02B0  B0 10			            mov   al, 010h            
- 02B2  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ¨´†§Ë®© ®≠§®™†‚Æ‡
- 02B4  B0 00			            mov   al,00h
- 02B6  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
- 02B8  8A 26 003A R					mov   ah, Res+5       ;ß†£‡„¶†•¨ ¢ ‡•£®·‚‡Î
- 02BC  8A C4			            mov   al, ah              ;‚•™„È•• ß≠†Á•≠®• ·„¨¨Î                 
- 02BE  D7			            xlat
- 02BF  F6 D0					    not al         ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ¨´†§Ë•© Ê®‰‡Î
- 02C1  E6 FD			            out   SumPort, al    ;ÇÎ¢Æ§®¨ ≠† ¨´†§Ë®© ®≠§®™†‚Æ‡            
- 02C3  B0 20			            mov   al, 020h            
- 02C5  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ¨´†§Ë®© ®≠§®™†‚Æ‡
- 02C7  B0 00			            mov   al,00h
- 02C9  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
- 02CB  32 E4					    xor ah, ah
- 02CD  C3			SumOutRet:  ret
- 02CE				SumOut      ENDP
+ 0278				SumOut     PROC NEAR  			;–í—ã–≤–æ–¥–∏–º —Å—É–º–º—É –Ω–∞ –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä—ã
+ 0278  80 3E 0043 R 01					cmp ErrorFlag, 01h
+ 027D  74 29						je SumOutRet
+							
+ 027F  33 C9						xor cx, cx
+ 0281  B1 01						mov cl, 01h
+ 0283  8D 1E 000A R		            lea   bx, DataHexTabl 
+ 0287  8D 36 0035 R					lea SI, Res
+ 028B  8A 24			SumOut1:	mov ah, [SI]
+ 028D  8A C4						mov al, ah
+ 028F  D7						xlat
+ 0290  F6 D0						not al					;—Ç–∞–±–ª–∏—á–Ω–æ–µ –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ
+ 0292  E6 FD						out SumPort, al			;–≤—ã–≤–æ–¥–∏–º –Ω–∞ –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 0294  8A C1						mov al, cl
+ 0296  E6 FE						out SumPowerPort, al	;–∑–∞–∂–∏–≥–∞–µ–º –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 0298  B0 00						mov al,00h
+ 029A  E6 FE						out SumPowerPort, al	;–≥–∞—Å–∏–º –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 029C  D0 E1						shl cl, 1
+ 029E  46						inc SI
+ 029F  80 F9 20						cmp cl, 20h
+ 02A2  76 E7						jbe SumOut1
+ 02A4  32 E4					    xor ah, ah
+ 02A6  33 C9						xor cx, cx
+ 02A8  C3			SumOutRet:  ret
+ 02A9				SumOut      ENDP
 
- 02CE				CntOut 	    PROC NEAR
- 02CE  8D 1E 000A R					lea   bx, DataHexTabl
- 02D2  8A 26 0047 R					mov   ah, byte ptr Cnt
- 02D6  8A C4						mov   al,ah               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 02D8  D7			            xlat
- 02D9  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 02DB  E6 FD			            out   CntPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 02DD  B0 01			            mov   al, 01h            
- 02DF  E6 FC			            out   CntPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 02E1  B0 00			            mov   al,00h             
- 02E3  E6 FC			            out   CntPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
+ 02A9				CntOut 	    PROC NEAR
+ 02A9  33 C9						xor cx, cx
+ 02AB  B1 01						mov cl, 01h
+ 02AD  8D 1E 000A R					lea   bx, DataHexTabl
+ 02B1  8D 36 0048 R					lea SI, byte ptr Cnt
+ 02B5  8A 24			CntOut1:	mov ah, [SI]
+ 02B7  8A C4						mov al, ah
+ 02B9  D7						xlat
+ 02BA  F6 D0						not al				;—Ç–∞–±–ª–∏—á–Ω–æ–µ –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ
+ 02BC  E6 FD						out CntPort, al		;–≤—ã–≤–æ–¥–∏–º –Ω–∞ –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 02BE  8A C1						mov al, cl
+ 02C0  E6 FC						out CntPowerPort, al	;–∑–∞–∂–∏–≥–∞–µ–º –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä 
+ 02C2  B0 00						mov al,00h
+ 02C4  E6 FC						out CntPowerPort, al	;–≥–∞—Å–∏–º –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 02C6  D0 E1						shl cl, 1
+ 02C8  46						inc SI
+ 02C9  80 F9 04						cmp cl, 04h
+ 02CC  76 E7						jbe CntOut1
+ 02CE  32 E4						xor ah, ah
+ 02D0  33 C9						xor cx, cx
 							
- 02E5  8A 26 0048 R					mov   ah, byte ptr Cnt+1
- 02E9  8A C4						mov   al,ah               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 02EB  D7			            xlat
- 02EC  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 02EE  E6 FD			            out   CntPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 02F0  B0 02			            mov   al, 02h            
- 02F2  E6 FC			            out   CntPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 02F4  B0 00			            mov   al,00h             
- 02F6  E6 FC			            out   CntPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
-							
- 02F8  8A 26 0049 R					mov   ah, byte ptr Cnt+2
- 02FC  8A C4						mov   al,ah               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 02FE  D7			            xlat
- 02FF  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 0301  E6 FD			            out   CntPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 0303  B0 04			            mov   al, 04h            
- 0305  E6 FC			            out   CntPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 0307  B0 00			            mov   al,00h             
- 0309  E6 FC			            out   CntPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
-							
- 030B  8D 1E 000A R					lea   bx, DataHexTabl
- 030F  8A 26 004F R					mov   ah, byte ptr CntBrak
- 0313  8A C4						mov   al,ah               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 0315  D7			            xlat
- 0316  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 0318  E6 FD			            out   CntPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 031A  B0 08			            mov   al, 08h            
- 031C  E6 FC			            out   CntPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 031E  B0 00			            mov   al,00h             
- 0320  E6 FC			            out   CntPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
-							
- 0322  8A 26 0050 R					mov   ah, byte ptr CntBrak+1
- 0326  8A C4						mov   al,ah               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 0328  D7			            xlat
- 0329  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 032B  E6 FD			            out   CntPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 032D  B0 10			            mov   al, 10h            
- 032F  E6 FC			            out   CntPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 0331  B0 00			            mov   al,00h             
- 0333  E6 FC			            out   CntPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
-							
- 0335  8A 26 0051 R					mov   ah, byte ptr CntBrak+2
- 0339  8A C4						mov   al,ah               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 033B  D7			            xlat
- 033C  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 033E  E6 FD			            out   CntPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 0340  B0 20			            mov   al, 20h            
- 0342  E6 FC			            out   CntPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 0344  B0 00			            mov   al,00h             
- 0346  E6 FC			            out   CntPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
-							
-							
- 0348  32 E4						xor ah, ah
- 034A  C3						ret
- 034B				CntOut 	   ENDP
+ 02D2  B1 08						mov cl, 08h
+ 02D4  8D 1E 000A R					lea   bx, DataHexTabl
+ 02D8  8D 36 0050 R					lea SI, byte ptr CntBrak
+ 02DC  8A 24			CntOut2:	mov ah, [SI]
+ 02DE  8A C4						mov al, ah
+ 02E0  D7						xlat
+ 02E1  F6 D0						not al					;—Ç–∞–±–ª–∏—á–Ω–æ–µ –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ
+ 02E3  E6 FD						out CntPort, al			;–≤—ã–≤–æ–¥–∏–º –Ω–∞ –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 02E5  8A C1						mov al, cl
+ 02E7  E6 FC						out CntPowerPort, al	;–∑–∞–∂–∏–≥–∞–µ–º –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä 
+ 02E9  B0 00						mov al,00h
+ 02EB  E6 FC						out CntPowerPort, al	;–≥–∞—Å–∏–º –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 02ED  D0 E1						shl cl, 1
+ 02EF  46						inc SI
+ 02F0  80 F9 20						cmp cl, 20h
+ 02F3  76 E7						jbe CntOut2
+ 02F5  32 E4						xor ah, ah
+ 02F7  33 C9						xor cx, cx
+ 02F9  C3						ret
+ 02FA				CntOut 	   ENDP
 
- 034B				ErrorOut Proc Near
- 034B  80 3E 0043 R 00					cmp ErrorFlag, 00h
- 0350  74 4F						je ErrorRet
+ 02FA				ErrorOut Proc Near
+ 02FA  80 3E 0043 R 00					cmp ErrorFlag, 00h
+ 02FF  74 2A						je ErrorRet
 							
- 0352  32 C0						xor al, al
- 0354  8D 1E 0030 R					lea   bx, ErrTable
- 0358  D7			            xlat
- 0359  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 035B  E6 FD			            out   SumPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 035D  B0 20			            mov   al, 20h            
- 035F  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 0361  B0 00			            mov   al,00h             
- 0363  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
+ 0301  32 C0						xor al, al
+ 0303  32 DB						xor bl, bl
 							
+ 0305  8D 1E 0030 R					lea bx, ErrTable
+							;xor bl, bl
+ 0309  32 D2						xor dl, dl
+ 030B  B1 02						mov cl, 02h
 							
- 0365  B0 01						mov   al,1               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 0367  D7			            xlat
- 0368  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 036A  E6 FD			            out   SumPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 036C  B0 10			            mov   al, 10h            
- 036E  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 0370  B0 00			            mov   al,00h             
- 0372  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
+ 030D  8A C2			ErrorOut1:	mov al, dl
+ 030F  D7			            xlat
+ 0310  F6 D0					    not al				 ;—Ç–∞–±–ª–∏—á–Ω–æ–µ –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ
+ 0312  E6 FD			            out   SumPort, al    ;–≤—ã–≤–æ–¥–∏–º –Ω–∞ –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 0314  8A C1			            mov   al, cl            
+ 0316  E6 FE			            out   SumPowerPort, al    ;–∑–∞–∂–∏–≥–∞–µ–º –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä    
+ 0318  B0 00			            mov   al,00h             
+ 031A  E6 FE			            out   SumPowerPort, al    ;–≥–∞—Å–∏–º –∏–Ω–¥–∏–∫–∞—Ç–æ—Ä
+ 031C  D0 E1						shl cl, 1
+ 031E  FE C2						inc dl
+ 0320  80 F9 20						cmp cl, 20h
+ 0323  76 E8						jbe ErrorOut1
+ 0325  32 E4						xor ah, ah
+ 0327  33 C9						xor cx, cx
+ 0329  32 D2						xor dl, dl
 							
-							
- 0374  B0 02						mov   al,2               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 0376  D7			            xlat
- 0377  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 0379  E6 FD			            out   SumPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 037B  B0 08			            mov   al, 08h            
- 037D  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 037F  B0 00			            mov   al,00h             
- 0381  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
-							
- 0383  B0 03						mov   al,3               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 0385  D7			            xlat
- 0386  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 0388  E6 FD			            out   SumPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 038A  B0 04			            mov   al, 04h            
- 038C  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 038E  B0 00			            mov   al,00h             
- 0390  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
-							
- 0392  B0 04						mov   al,4               ;‚•Ø•‡Ï ¢ al ·‚†‡Ë†Ô Ê®‰‡†
- 0394  D7			            xlat
- 0395  F6 D0					    not al		   ;‚†°´®Á≠Æ• Ø‡•Æ°‡†ßÆ¢†≠®• ·‚†‡Ë•© Ê®‰‡Î
- 0397  E6 FD			            out   SumPort, al    ;¢Î¢Æ§®¨ ≠† ·‚‡†Ë®© ®≠§®™†‚Æ‡
- 0399  B0 02			            mov   al, 02h            
- 039B  E6 FE			            out   SumPowerPort, al    ;ß†¶®£†•¨ ·‚†‡Ë®© ®≠§®™†‚Æ‡    
- 039D  B0 00			            mov   al,00h             
- 039F  E6 FE			            out   SumPowerPort, al    ;£†·®¨ ®≠§®™†‚Æ‡
- 03A1  C3			ErrorRet:	ret
- 03A2				ErrorOut ENDP
+ 032B  C3			ErrorRet:	ret
+ 032C				ErrorOut ENDP
 
- 03A2				VibrDestr  PROC  NEAR
- 03A2  8A E0			VD1:       mov   ah,al       ;ëÆÂ‡†≠•≠®• ®·ÂÆ§≠Æ£Æ ·Æ·‚ÆÔ≠®Ô
- 03A4  B7 00			           mov   bh,0        ;ë°‡Æ· ·ÁÒ‚Á®™† ØÆ¢‚Æ‡•≠®©
- 03A6  EC			VD2:       in    al,dx       ;Ç¢Æ§ ‚•™„È•£Æ ·Æ·‚ÆÔ≠®Ô
- 03A7  38 C4			           cmp   ah,al       ;í•™„È•• ·Æ·‚ÆÔ≠®•=®·ÂÆ§≠Æ¨„?
- 03A9  75 F7			           jne   VD1         ;è•‡•ÂÆ§, •·´® ≠•‚
- 03AB  FE C7			           inc   bh          ;à≠™‡•¨•≠‚ ·ÁÒ‚Á®™† ØÆ¢‚Æ‡•≠®©
- 03AD  80 FF 1E			           cmp   bh,NMax     ;äÆ≠•Ê §‡•°•ß£†?
- 03B0  75 F4			           jne   VD2         ;è•‡•ÂÆ§, •·´® ≠•‚
- 03B2  8A C4			           mov   al,ah       ;ÇÆ··‚†≠Æ¢´•≠®• ¨•·‚ÆØÆ´Æ¶•≠®Ô §†≠≠ÎÂ
- 03B4  C3			           ret
- 03B5				VibrDestr  ENDP
+ 032C				Sbros PROC NEAR
+ 032C  80 3E 0045 R 00					cmp SbrosFlag, 00h
+ 0331  74 06						je SbrosRet
+ 0333  E8 FCFF						call Initialization
+ 0336  E8 0014						call CopyArr
+ 0339  C3			SbrosRet:	ret
+ 033A				Sbros ENDP
 
- 03B5				CopyArr PROC NEAR
- 03B5  B9 000A						MOV CX, 10 ;á†£‡„ß™† ·ÁÒ‚Á®™† Ê®™´Æ¢
- 03B8  8D 1E 0000 R					LEA BX, HexArr ;á†£‡„ß™† †§‡•·† ¨†··®¢† Ê®‰‡
- 03BC  8D 2E 000A R					LEA BP, HexTabl ;á†£‡„ß™† †§‡•·† ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô
- 03C0  8D 3E 0000 R					LEA DI, DataHexArr ;á†£‡„ß™† †§‡•·† ¨†··®¢† Ê®‰‡ ¢ ·•£¨•≠‚• §†≠≠ÎÂ
- 03C4  8D 36 000A R					LEA SI, DataHexTabl ;á†£‡„ß™† †§‡•·† ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô ¢ ·•£¨•≠‚• §†≠≠ÎÂ
- 03C8				CopyArr0:
- 03C8  2E: 8A 07					MOV AL, CS:[BX] ;ó‚•≠®• Ê®‰‡Î ®ß ¨†··®¢† ¢ †™™„¨„´Ô‚Æ‡
- 03CB  88 05						MOV [DI], AL ;á†Ø®·Ï Ê®‰‡Î ¢ ·•£¨•≠‚ §†≠≠ÎÂ/DataHexArr
- 03CD  43						INC BX ;åÆ§®‰®™†Ê®Ô †§‡•·† HexArr
- 03CE  47						INC DI ;åÆ§®‰®™†Ê®Ô †§‡•·† DataHexArr
- 03CF  E2 F7						LOOP CopyArr0
-							
- 03D1  B9 000A						MOV CX, 10 ;á†£‡„ß™† ·ÁÒ‚Á®™† Ê®™´Æ¢
- 03D4				CopyArr1:
- 03D4  2E: 8A 66 00					MOV AH, CS:[BP] ;ó‚•≠®• £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ®ß ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô
- 03D8  88 24						MOV [SI], AH ;á†Ø®·Ï £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ¢ ·•£¨•≠‚ §†≠≠ÎÂ/DataHexTabl
- 03DA  45						INC BP ;åÆ§®‰®™†Ê®Ô †§‡•·† HexTabl
- 03DB  46						INC SI ;åÆ§®‰®™†Ê®Ô †§‡•·† DataHexTabl
- 03DC  E2 F6						LOOP CopyArr1
-							
- 03DE  B9 000E						MOV CX, 14 ;á†£‡„ß™† ·ÁÒ‚Á®™† Ê®™´Æ¢
- 03E1  8D 2E 0014 R					LEA BP, Table ;á†£‡„ß™† †§‡•·† ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô
- 03E5  8D 36 0014 R					LEA SI, DataTable ;á†£‡„ß™† †§‡•·† ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô ¢ ·•£¨•≠‚• §†≠≠ÎÂ
- 03E9				CopyArr2:
- 03E9  2E: 8A 66 00					MOV AH, CS:[BP] ;ó‚•≠®• £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ®ß ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô
- 03ED  88 24						MOV [SI], AH ;á†Ø®·Ï £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ¢ ·•£¨•≠‚ §†≠≠ÎÂ/DataTable
- 03EF  2E: 8A 46 01					MOV AL, CS:[BP+1] ;ó‚•≠®• £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ®ß ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô
- 03F3  88 44 01						MOV [SI+1], AL ;á†Ø®·Ï £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ¢ ·•£¨•≠‚ §†≠≠ÎÂ/DataTable
- 03F6  45						INC BP ;åÆ§®‰®™†Ê®Ô †§‡•·† Table
- 03F7  46						INC SI ;åÆ§®‰®™†Ê®Ô †§‡•·† DataTable
- 03F8  45						INC BP ;åÆ§®‰®™†Ê®Ô †§‡•·† Table
- 03F9  46						INC SI ;åÆ§®‰®™†Ê®Ô †§‡•·† DataTable
- 03FA  E2 ED						LOOP CopyArr2
-							
- 03FC  B9 0004						MOV CX, 4 ;á†£‡„ß™† ·ÁÒ‚Á®™† Ê®™´Æ¢
- 03FF  8D 2E 0030 R					LEA BP, Err ;á†£‡„ß™† †§‡•·† ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô
- 0403  8D 36 0030 R					LEA SI, ErrTable ;á†£‡„ß™† †§‡•·† ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô ¢ ·•£¨•≠‚• §†≠≠ÎÂ
- 0407				CopyArr3:
- 0407  2E: 8A 66 00					MOV AH, CS:[BP] ;ó‚•≠®• £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ®ß ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô
- 040B  88 24						MOV [SI], AH ;á†Ø®·Ï £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ¢ ·•£¨•≠‚ §†≠≠ÎÂ/DataTable
- 040D  2E: 8A 46 01					MOV AL, CS:[BP+1] ;ó‚•≠®• £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ®ß ‚†°´®ÊÎ Ø‡•Æ°‡†ßÆ¢†≠®Ô
- 0411  88 44 01						MOV [SI+1], AL ;á†Ø®·Ï £‡†‰®Á•·™Æ£Æ Æ°‡†ß† ¢ ·•£¨•≠‚ §†≠≠ÎÂ/DataTable
- 0414  45						INC BP ;åÆ§®‰®™†Ê®Ô †§‡•·† Err
- 0415  46						INC SI ;åÆ§®‰®™†Ê®Ô †§‡•·† ErrTable
- 0416  E2 EF						LOOP CopyArr3
- 0418  33 ED						xor bp,bp
- 041A  C3						ret
- 041B				CopyArr ENDP
+ 033A				VibrDestr  PROC  NEAR
+ 033A  8A E0			VD1:       mov   ah,al       ;–°–æ—Ö—Ä–∞–Ω–µ–Ω–∏–µ –∏—Å—Ö–æ–¥–Ω–æ–≥–æ —Å–æ—Å—Ç–æ—è–Ω–∏—è
+ 033C  B5 00			           mov   ch,0        ;–°–±—Ä–æ—Å —Å—á—ë—Ç—á–∏–∫–∞ –ø–æ–≤—Ç–æ—Ä–µ–Ω–∏–π
+ 033E  EC			VD2:       in    al,dx       ;–í–≤–æ–¥ —Ç–µ–∫—É—â–µ–≥–æ —Å–æ—Å—Ç–æ—è–Ω–∏—è
+ 033F  38 C4			           cmp   ah,al       ;–¢–µ–∫—É—â–µ–µ —Å–æ—Å—Ç–æ—è–Ω–∏–µ=–∏—Å—Ö–æ–¥–Ω–æ–º—É?
+ 0341  75 F7			           jne   VD1         ;–ü–µ—Ä–µ—Ö–æ–¥, –µ—Å–ª–∏ –Ω–µ—Ç
+ 0343  FE C5			           inc   ch          ;–ò–Ω–∫—Ä–µ–º–µ–Ω—Ç —Å—á—ë—Ç—á–∏–∫–∞ –ø–æ–≤—Ç–æ—Ä–µ–Ω–∏–π
+ 0345  80 FD 46			           cmp   ch,NMax     ;–ö–æ–Ω–µ—Ü –¥—Ä–µ–±–µ–∑–≥–∞?
+ 0348  75 F4			           jne   VD2         ;–ü–µ—Ä–µ—Ö–æ–¥, –µ—Å–ª–∏ –Ω–µ—Ç
+ 034A  8A C4			           mov   al,ah       ;–í–æ—Å—Å—Ç–∞–Ω–æ–≤–ª–µ–Ω–∏–µ –º–µ—Å—Ç–æ–ø–æ–ª–æ–∂–µ–Ω–∏—è –¥–∞–Ω–Ω—ã—Ö
+ 034C  C3			           ret
+ 034D				VibrDestr  ENDP
 
- 041B				Start:
- 041B  B8 ---- R					mov   ax,Data
- 041E  8E D8						mov   ds,ax
- 0420  8E C0						mov   es,ax
- 0422  B8 ---- R					mov   ax,Stk
- 0425  8E D0						mov   ss,ax
- 0427  8D 26 0020 R					lea   sp,StkTop
+ 034D				CopyArr PROC NEAR
+ 034D  B9 000A						MOV CX, 10 ;–ó–∞–≥—Ä—É–∑–∫–∞ —Å—á—ë—Ç—á–∏–∫–∞ —Ü–∏–∫–ª–æ–≤
+ 0350  8D 1E 0000 R					LEA BX, HexArr ;–ó–∞–≥—Ä—É–∑–∫–∞ –∞–¥—Ä–µ—Å–∞ –º–∞—Å—Å–∏–≤–∞ —Ü–∏—Ñ—Ä
+ 0354  8D 2E 000A R					LEA BP, HexTabl ;–ó–∞–≥—Ä—É–∑–∫–∞ –∞–¥—Ä–µ—Å–∞ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è
+ 0358  8D 3E 0000 R					LEA DI, DataHexArr ;–ó–∞–≥—Ä—É–∑–∫–∞ –∞–¥—Ä–µ—Å–∞ –º–∞—Å—Å–∏–≤–∞ —Ü–∏—Ñ—Ä –≤ —Å–µ–≥–º–µ–Ω—Ç–µ –¥–∞–Ω–Ω—ã—Ö
+ 035C  8D 36 000A R					LEA SI, DataHexTabl ;–ó–∞–≥—Ä—É–∑–∫–∞ –∞–¥—Ä–µ—Å–∞ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è –≤ —Å–µ–≥–º–µ–Ω—Ç–µ –¥–∞–Ω–Ω—ã—Ö
+ 0360				CopyArr0:
+ 0360  2E: 8A 07					MOV AL, CS:[BX] ;–ß—Ç–µ–Ω–∏–µ —Ü–∏—Ñ—Ä—ã –∏–∑ –º–∞—Å—Å–∏–≤–∞ –≤ –∞–∫–∫—É–º—É–ª—è—Ç–æ—Ä
+ 0363  88 05						MOV [DI], AL ;–ó–∞–ø–∏—Å—å —Ü–∏—Ñ—Ä—ã –≤ —Å–µ–≥–º–µ–Ω—Ç –¥–∞–Ω–Ω—ã—Ö/DataHexArr
+ 0365  43						INC BX ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ HexArr
+ 0366  47						INC DI ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ DataHexArr
+ 0367  E2 F7						LOOP CopyArr0
+							
+ 0369  B9 000A						MOV CX, 10 ;–ó–∞–≥—Ä—É–∑–∫–∞ —Å—á—ë—Ç—á–∏–∫–∞ —Ü–∏–∫–ª–æ–≤
+ 036C				CopyArr1:
+ 036C  2E: 8A 66 00					MOV AH, CS:[BP] ;–ß—Ç–µ–Ω–∏–µ –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –∏–∑ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è
+ 0370  88 24						MOV [SI], AH ;–ó–∞–ø–∏—Å—å –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –≤ —Å–µ–≥–º–µ–Ω—Ç –¥–∞–Ω–Ω—ã—Ö/DataHexTabl
+ 0372  45						INC BP ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ HexTabl
+ 0373  46						INC SI ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ DataHexTabl
+ 0374  E2 F6						LOOP CopyArr1
+							
+ 0376  B9 000E						MOV CX, 14 ;–ó–∞–≥—Ä—É–∑–∫–∞ —Å—á—ë—Ç—á–∏–∫–∞ —Ü–∏–∫–ª–æ–≤
+ 0379  8D 2E 0014 R					LEA BP, Table ;–ó–∞–≥—Ä—É–∑–∫–∞ –∞–¥—Ä–µ—Å–∞ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è
+ 037D  8D 36 0014 R					LEA SI, DataTable ;–ó–∞–≥—Ä—É–∑–∫–∞ –∞–¥—Ä–µ—Å–∞ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è –≤ —Å–µ–≥–º–µ–Ω—Ç–µ –¥–∞–Ω–Ω—ã—Ö
+ 0381				CopyArr2:
+ 0381  2E: 8A 66 00					MOV AH, CS:[BP] ;–ß—Ç–µ–Ω–∏–µ –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –∏–∑ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è
+ 0385  88 24						MOV [SI], AH ;–ó–∞–ø–∏—Å—å –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –≤ —Å–µ–≥–º–µ–Ω—Ç –¥–∞–Ω–Ω—ã—Ö/DataTable
+ 0387  2E: 8A 46 01					MOV AL, CS:[BP+1] ;–ß—Ç–µ–Ω–∏–µ –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –∏–∑ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è
+ 038B  88 44 01						MOV [SI+1], AL ;–ó–∞–ø–∏—Å—å –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –≤ —Å–µ–≥–º–µ–Ω—Ç –¥–∞–Ω–Ω—ã—Ö/DataTable
+ 038E  45						INC BP ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ Table
+ 038F  46						INC SI ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ DataTable
+ 0390  45						INC BP ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ Table
+ 0391  46						INC SI ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ DataTable
+ 0392  E2 ED						LOOP CopyArr2
+							
+ 0394  B9 0004						MOV CX, 4 ;–ó–∞–≥—Ä—É–∑–∫–∞ —Å—á—ë—Ç—á–∏–∫–∞ —Ü–∏–∫–ª–æ–≤
+ 0397  8D 2E 0030 R					LEA BP, Err ;–ó–∞–≥—Ä—É–∑–∫–∞ –∞–¥—Ä–µ—Å–∞ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è
+ 039B  8D 36 0030 R					LEA SI, ErrTable ;–ó–∞–≥—Ä—É–∑–∫–∞ –∞–¥—Ä–µ—Å–∞ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è –≤ —Å–µ–≥–º–µ–Ω—Ç–µ –¥–∞–Ω–Ω—ã—Ö
+ 039F				CopyArr3:
+ 039F  2E: 8A 66 00					MOV AH, CS:[BP] ;–ß—Ç–µ–Ω–∏–µ –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –∏–∑ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è
+ 03A3  88 24						MOV [SI], AH ;–ó–∞–ø–∏—Å—å –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –≤ —Å–µ–≥–º–µ–Ω—Ç –¥–∞–Ω–Ω—ã—Ö/DataTable
+ 03A5  2E: 8A 46 01					MOV AL, CS:[BP+1] ;–ß—Ç–µ–Ω–∏–µ –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –∏–∑ —Ç–∞–±–ª–∏—Ü—ã –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è
+ 03A9  88 44 01						MOV [SI+1], AL ;–ó–∞–ø–∏—Å—å –≥—Ä–∞—Ñ–∏—á–µ—Å–∫–æ–≥–æ –æ–±—Ä–∞–∑–∞ –≤ —Å–µ–≥–º–µ–Ω—Ç –¥–∞–Ω–Ω—ã—Ö/DataTable
+ 03AC  45						INC BP ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ Err
+ 03AD  46						INC SI ;–ú–æ–¥–∏—Ñ–∏–∫–∞—Ü–∏—è –∞–¥—Ä–µ—Å–∞ ErrTable
+ 03AE  E2 EF						LOOP CopyArr3
+ 03B0  33 ED						xor bp,bp
+ 03B2  33 C9						xor cx, cx
+ 03B4  C3						ret
+ 03B5				CopyArr ENDP
+
+ 03B5				Start:
+ 03B5  B8 ---- R					mov   ax,Data
+ 03B8  8E D8						mov   ds,ax
+ 03BA  8E C0						mov   es,ax
+ 03BC  B8 ---- R					mov   ax,Stk
+ 03BF  8E D0						mov   ss,ax
+ 03C1  8D 26 0020 R					lea   sp,StkTop
 						   
- 042B  E8 FC07						call Initialization
- 042E  E8 FF84						call CopyArr
+ 03C5  E8 FC6D						call Initialization
+ 03C8  E8 FF82						call CopyArr
 						   
- 0431				MainLoop:  ;call KeyRead
- 0431  E8 FCA7						call AddSymbol
- 0434  E8 FC47						call Simul
- 0437  E8 FD57						call AccumulationSumm
- 043A  E8 FE11						call SumOut
- 043D  E8 FE8E						call CntOut
- 0440  E8 FF08						call ErrorOut
- 0443  EB EC						jmp MainLoop
-				;á§•·Ï ‡†ß¨•È†•‚·Ô ™Æ§ Ø‡Æ£‡†¨¨Î
+ 03CB				MainLoop:  ;call KeyRead
+ 03CB  E8 FD1B						call ReadInput
+ 03CE  E8 FCBB						call Simul
+ 03D1  E8 FDDE						call AccumulationSumm
+ 03D4  E8 FEA1						call SumOut
+ 03D7  E8 FECF						call CntOut
+ 03DA  E8 FF1D						call ErrorOut
+ 03DD  E8 FF4C						call Sbros
+ 03E0  EB E9						jmp MainLoop
+				;–ó–¥–µ—Å—å —Ä–∞–∑–º–µ—â–∞–µ—Ç—Å—è –∫–æ–¥ –ø—Ä–æ–≥—Ä–∞–º–º—ã
 
 
-				;Ç ·´•§„ÓÈ•© ·‚‡Æ™• ≠•Æ°ÂÆ§®¨Æ „™†ß†‚Ï ·¨•È•≠®• ·‚†‡‚Æ¢Æ© ‚ÆÁ™®
+				;–í —Å–ª–µ–¥—É—é—â–µ–π —Å—Ç—Ä–æ–∫–µ –Ω–µ–æ–±—Ö–æ–¥–∏–º–æ —É–∫–∞–∑–∞—Ç—å —Å–º–µ—â–µ–Ω–∏–µ —Å—Ç–∞—Ä—Ç–æ–≤–æ–π —Ç–æ—á–∫–∏
 							org   RomSize-16-((InitDataEnd-InitDataStart+15) AND 0FFF0h)
 							ASSUME cs:NOTHING
- 0FF0  EA ---- 041B R					jmp   Far Ptr Start
+ 0FF0  EA ---- 03B5 R					jmp   Far Ptr Start
  0FF5				Code       	ENDS
 				END		Start
-Microsoft (R) Macro Assembler Version 6.14.8444		    05/31/23 01:12:15
+Microsoft (R) Macro Assembler Version 6.14.8444		    05/31/23 18:08:47
 Kursach.asm						     Symbols 2 - 1
 
 
@@ -615,7 +532,7 @@ Segments and Groups:
                 N a m e                 Size     Length   Align   Combine Class
 
 Code . . . . . . . . . . . . . .	16 Bit	 0FF5	  Para	  Private 
-Data . . . . . . . . . . . . . .	16 Bit	 0058	  Abs	  Private 
+Data . . . . . . . . . . . . . .	16 Bit	 0059	  Abs	  Private 
 InitData . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
 IntTable . . . . . . . . . . . .	16 Bit	 0000	  Abs	  Private 
 Stk  . . . . . . . . . . . . . .	16 Bit	 0020	  Abs	  Private 
@@ -625,41 +542,48 @@ Procedures,  parameters and locals:
 
                 N a m e                 Type     Value    Attr
 
-AccumulationSumm . . . . . . . .	P Near	 0191	  Code	Length= 00BD Public
-  M8 . . . . . . . . . . . . . .	L Near	 01C5	  Code	
-  M9 . . . . . . . . . . . . . .	L Near	 01E1	  Code	
-  M10  . . . . . . . . . . . . .	L Near	 0224	  Code	
-  M7 . . . . . . . . . . . . . .	L Near	 0245	  Code	
-AddCntAll  . . . . . . . . . . .	P Near	 0166	  Code	Length= 002B Public
-  Cnt1 . . . . . . . . . . . . .	L Near	 0177	  Code	
-  CntRet . . . . . . . . . . . .	L Near	 0190	  Code	
-AddSymbol  . . . . . . . . . . .	P Near	 00DB	  Code	Length= 008B Public
-  m6 . . . . . . . . . . . . . .	L Near	 00EC	  Code	
-  m3 . . . . . . . . . . . . . .	L Near	 00F5	  Code	
-  m5 . . . . . . . . . . . . . .	L Near	 00FC	  Code	
-  m11  . . . . . . . . . . . . .	L Near	 0112	  Code	
-  m4 . . . . . . . . . . . . . .	L Near	 011A	  Code	
-  m2 . . . . . . . . . . . . . .	L Near	 0130	  Code	
-  m1 . . . . . . . . . . . . . .	L Near	 0165	  Code	
-CntOut . . . . . . . . . . . . .	P Near	 02CE	  Code	Length= 007D Public
-CopyArr  . . . . . . . . . . . .	P Near	 03B5	  Code	Length= 0066 Public
-  CopyArr0 . . . . . . . . . . .	L Near	 03C8	  Code	
-  CopyArr1 . . . . . . . . . . .	L Near	 03D4	  Code	
-  CopyArr2 . . . . . . . . . . .	L Near	 03E9	  Code	
-  CopyArr3 . . . . . . . . . . .	L Near	 0407	  Code	
-ErrorOut . . . . . . . . . . . .	P Near	 034B	  Code	Length= 0057 Public
-  ErrorRet . . . . . . . . . . .	L Near	 03A1	  Code	
-Initialization . . . . . . . . .	P Near	 0035	  Code	Length= 0049 Public
-Simul  . . . . . . . . . . . . .	P Near	 007E	  Code	Length= 005D Public
-  Timer0 . . . . . . . . . . . .	L Near	 0093	  Code	
-  Timer2 . . . . . . . . . . . .	L Near	 00B1	  Code	
-  Timer3 . . . . . . . . . . . .	L Near	 00C5	  Code	
-  Timer1 . . . . . . . . . . . .	L Near	 00D5	  Code	
-SumOut . . . . . . . . . . . . .	P Near	 024E	  Code	Length= 0080 Public
-  SumOutRet  . . . . . . . . . .	L Near	 02CD	  Code	
-VibrDestr  . . . . . . . . . . .	P Near	 03A2	  Code	Length= 0013 Public
-  VD1  . . . . . . . . . . . . .	L Near	 03A2	  Code	
-  VD2  . . . . . . . . . . . . .	L Near	 03A6	  Code	
+AccumulationSumm . . . . . . . .	P Near	 01B2	  Code	Length= 00C6 Public
+  M8 . . . . . . . . . . . . . .	L Near	 01EF	  Code	
+  M9 . . . . . . . . . . . . . .	L Near	 020B	  Code	
+  M10  . . . . . . . . . . . . .	L Near	 024E	  Code	
+  M7 . . . . . . . . . . . . . .	L Near	 026F	  Code	
+AddCntAll  . . . . . . . . . . .	P Near	 0187	  Code	Length= 002B Public
+  Cnt1 . . . . . . . . . . . . .	L Near	 0198	  Code	
+  CntRet . . . . . . . . . . . .	L Near	 01B1	  Code	
+CntOut . . . . . . . . . . . . .	P Near	 02A9	  Code	Length= 0051 Public
+  CntOut1  . . . . . . . . . . .	L Near	 02B5	  Code	
+  CntOut2  . . . . . . . . . . .	L Near	 02DC	  Code	
+CopyArr  . . . . . . . . . . . .	P Near	 034D	  Code	Length= 0068 Public
+  CopyArr0 . . . . . . . . . . .	L Near	 0360	  Code	
+  CopyArr1 . . . . . . . . . . .	L Near	 036C	  Code	
+  CopyArr2 . . . . . . . . . . .	L Near	 0381	  Code	
+  CopyArr3 . . . . . . . . . . .	L Near	 039F	  Code	
+ErrorOut . . . . . . . . . . . .	P Near	 02FA	  Code	Length= 0032 Public
+  ErrorOut1  . . . . . . . . . .	L Near	 030D	  Code	
+  ErrorRet . . . . . . . . . . .	L Near	 032B	  Code	
+Initialization . . . . . . . . .	P Near	 0035	  Code	Length= 0057 Public
+ReadInput  . . . . . . . . . . .	P Near	 00E9	  Code	Length= 009E Public
+  m6 . . . . . . . . . . . . . .	L Near	 00FA	  Code	
+  m3 . . . . . . . . . . . . . .	L Near	 010C	  Code	
+  m5 . . . . . . . . . . . . . .	L Near	 0113	  Code	
+  NoSbros  . . . . . . . . . . .	L Near	 0125	  Code	
+  m11  . . . . . . . . . . . . .	L Near	 0133	  Code	
+  m4 . . . . . . . . . . . . . .	L Near	 013B	  Code	
+  m2 . . . . . . . . . . . . . .	L Near	 0151	  Code	
+  m1 . . . . . . . . . . . . . .	L Near	 0186	  Code	
+Sbros  . . . . . . . . . . . . .	P Near	 032C	  Code	Length= 000E Public
+  SbrosRet . . . . . . . . . . .	L Near	 0339	  Code	
+Simul  . . . . . . . . . . . . .	P Near	 008C	  Code	Length= 005D Public
+  Timer0 . . . . . . . . . . . .	L Near	 00A1	  Code	
+  Timer2 . . . . . . . . . . . .	L Near	 00BF	  Code	
+  Timer3 . . . . . . . . . . . .	L Near	 00D3	  Code	
+  Timer1 . . . . . . . . . . . .	L Near	 00E3	  Code	
+SumOut . . . . . . . . . . . . .	P Near	 0278	  Code	Length= 0031 Public
+  SumOut1  . . . . . . . . . . .	L Near	 028B	  Code	
+  SumOutRet  . . . . . . . . . .	L Near	 02A8	  Code	
+VibrDestr  . . . . . . . . . . .	P Near	 033A	  Code	Length= 0013 Public
+  VD1  . . . . . . . . . . . . .	L Near	 033A	  Code	
+  VD2  . . . . . . . . . . . . .	L Near	 033E	  Code	
 
 
 Symbols:
@@ -667,12 +591,12 @@ Symbols:
                 N a m e                 Type     Value    Attr
 
 BrakFlag . . . . . . . . . . . .	Byte	 0042	  Data	
-Buffer . . . . . . . . . . . . .	Word	 0045	  Data	
-CntAll . . . . . . . . . . . . .	DWord	 004B	  Data	
-CntBrak  . . . . . . . . . . . .	DWord	 004F	  Data	
+Buffer . . . . . . . . . . . . .	Word	 0046	  Data	
+CntAll . . . . . . . . . . . . .	DWord	 004C	  Data	
+CntBrak  . . . . . . . . . . . .	DWord	 0050	  Data	
 CntPort  . . . . . . . . . . . .	Number	 00FDh	 
 CntPowerPort . . . . . . . . . .	Number	 00FCh	 
-Cnt  . . . . . . . . . . . . . .	DWord	 0047	  Data	
+Cnt  . . . . . . . . . . . . . .	DWord	 0048	  Data	
 ControlPort  . . . . . . . . . .	Number	 00FEh	 
 DataHexArr . . . . . . . . . . .	Byte	 0000	  Data	
 DataHexTabl  . . . . . . . . . .	Byte	 000A	  Data	
@@ -686,22 +610,23 @@ IndPort  . . . . . . . . . . . .	Number	 00FBh
 InitDataEnd  . . . . . . . . . .	L Near	 0000	  InitData	
 InitDataStart  . . . . . . . . .	L Near	 0000	  InitData	
 KbdPort  . . . . . . . . . . . .	Number	 00F7h	 
-MainLoop . . . . . . . . . . . .	L Near	 0431	  Code	
-NMax . . . . . . . . . . . . . .	Number	 001Eh	 
+MainLoop . . . . . . . . . . . .	L Near	 03CB	  Code	
+NMax . . . . . . . . . . . . . .	Number	 0046h	 
 OldButton  . . . . . . . . . . .	Byte	 003F	  Data	
 OldCntrl . . . . . . . . . . . .	Byte	 0040	  Data	
 Res  . . . . . . . . . . . . . .	Byte	 0035	  Data	
 RomSize  . . . . . . . . . . . .	Number	 1000h	 
+SbrosFlag  . . . . . . . . . . .	Byte	 0045	  Data	
 SelectedNumber . . . . . . . . .	DWord	 003B	  Data	
-Start  . . . . . . . . . . . . .	L Near	 041B	  Code	
+Start  . . . . . . . . . . . . .	L Near	 03B5	  Code	
 StkTop . . . . . . . . . . . . .	Word	 0020	  Stk	
 StopFlag . . . . . . . . . . . .	Byte	 0041	  Data	
 SumFlag  . . . . . . . . . . . .	Byte	 0044	  Data	
 SumPort  . . . . . . . . . . . .	Number	 00FDh	 
 SumPowerPort . . . . . . . . . .	Number	 00FEh	 
 Table  . . . . . . . . . . . . .	DWord	 0014	  Code	
-TimeEndFlag  . . . . . . . . . .	Byte	 0057	  Data	
-Time . . . . . . . . . . . . . .	DWord	 0053	  Data	
+TimeEndFlag  . . . . . . . . . .	Byte	 0058	  Data	
+Time . . . . . . . . . . . . . .	DWord	 0054	  Data	
 
 	   0 Warnings
 	   0 Errors
