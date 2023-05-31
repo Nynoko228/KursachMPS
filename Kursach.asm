@@ -1,5 +1,5 @@
 .386
-;Задайте объём ПЗУ в байтах
+;╨Ч╨░╨┤╨░╨╣╤В╨╡ ╨╛╨▒╤К╤С╨╝ ╨Я╨Ч╨г ╨▓ ╨▒╨░╨╣╤В╨░╤Е
 RomSize    EQU   4096
 
 SumPort = 0FDh ; 2
@@ -13,11 +13,11 @@ ControlPort = 0FEh
 NMax = 30
 
 IntTable   SEGMENT use16 AT 0
-;Здесь размещаются адреса обработчиков прерываний
+;╨Ч╨┤╨╡╤Б╤М ╤А╨░╨╖╨╝╨╡╤Й╨░╤О╤В╤Б╤П ╨░╨┤╤А╨╡╤Б╨░ ╨╛╨▒╤А╨░╨▒╨╛╤В╤З╨╕╨║╨╛╨▓ ╨┐╤А╨╡╤А╤Л╨▓╨░╨╜╨╕╨╣
 IntTable   ENDS
 
 Data       SEGMENT use16 AT 40h
-;Здесь размещаются описания переменных
+;╨Ч╨┤╨╡╤Б╤М ╤А╨░╨╖╨╝╨╡╤Й╨░╤О╤В╤Б╤П ╨╛╨┐╨╕╤Б╨░╨╜╨╕╤П ╨┐╨╡╤А╨╡╨╝╨╡╨╜╨╜╤Л╤Е
 DataHexArr db 10 dup(?) 
 DataHexTabl db 10 dup(?)
 DataTable dd 7 dup(?)
@@ -39,16 +39,16 @@ TimeEndFlag DB ?
 Data       ENDS
 
 
-;Задайте необходимый адрес стека
+;╨Ч╨░╨┤╨░╨╣╤В╨╡ ╨╜╨╡╨╛╨▒╤Е╨╛╨┤╨╕╨╝╤Л╨╣ ╨░╨┤╤А╨╡╤Б ╤Б╤В╨╡╨║╨░
 Stk        SEGMENT use16 AT 2000h
-;Задайте необходимый размер стека
+;╨Ч╨░╨┤╨░╨╣╤В╨╡ ╨╜╨╡╨╛╨▒╤Е╨╛╨┤╨╕╨╝╤Л╨╣ ╤А╨░╨╖╨╝╨╡╤А ╤Б╤В╨╡╨║╨░
            DW    16 dup (?)
 StkTop     Label Word
 Stk        ENDS
 
 InitData   SEGMENT use16
 InitDataStart:
-;Здесь размещаются описания констант
+;╨Ч╨┤╨╡╤Б╤М ╤А╨░╨╖╨╝╨╡╤Й╨░╤О╤В╤Б╤П ╨╛╨┐╨╕╤Б╨░╨╜╨╕╤П ╨║╨╛╨╜╤Б╤В╨░╨╜╤В
 
 
 
@@ -56,7 +56,7 @@ InitDataEnd:
 InitData   ENDS
 
 Code       SEGMENT use16
-;Здесь размещаются описания констант
+;╨Ч╨┤╨╡╤Б╤М ╤А╨░╨╖╨╝╨╡╤Й╨░╤О╤В╤Б╤П ╨╛╨┐╨╕╤Б╨░╨╜╨╕╤П ╨║╨╛╨╜╤Б╤В╨░╨╜╤В
 
            ASSUME cs:Code,ds:Data,es:Data
 		   
@@ -64,7 +64,8 @@ Code       SEGMENT use16
 	HexTabl DB 3Fh,0Ch,76h,5Eh,4Dh,5Bh,7Bh,0Eh,7Fh,5Fh
 	;Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h  
 	Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h 
-	Err DB 73h, 27h, 27h, 3fh, 27h
+	;Err DB 73h, 27h, 27h, 3fh, 27h
+	Err DB 27h, 3fh, 27h, 27h, 73h
 	
 Initialization PROC NEAR
 			xor ax, ax
@@ -111,7 +112,7 @@ Simul PROC NEAR
 			je Timer1
 			jmp Timer2
 		
-Timer0:	; Таймер
+Timer0:	; ╨в╨░╨╣╨╝╨╡╤А
 			SUB word ptr Time, 1
 			SBB word ptr Time+2, 0
 			MOV SI, word ptr Time
@@ -190,7 +191,7 @@ m4:		   	mov dx, KbdPort
 			je m1
 			mov OldButton, al
 			cmp   al, 0ffh
-			je    m1   ;Если нет символов для добавления (не нажата ни одна из кнопок)
+			je    m1   ;╨Х╤Б╨╗╨╕ ╨╜╨╡╤В ╤Б╨╕╨╝╨▓╨╛╨╗╨╛╨▓ ╨┤╨╗╤П ╨┤╨╛╨▒╨░╨▓╨╗╨╡╨╜╨╕╤П (╨╜╨╡ ╨╜╨░╨╢╨░╤В╨░ ╨╜╨╕ ╨╛╨┤╨╜╨░ ╨╕╨╖ ╨║╨╜╨╛╨┐╨╛╨║)
 m2:       
 			inc   ah
 			shr   al, 1
@@ -308,133 +309,71 @@ M7:			mov bp, word ptr SelectedNumber
 AccumulationSumm ENDP
 
 
-SumOut     PROC NEAR
+SumOut     PROC NEAR  			;╨Т╤Л╨▓╨╛╨┤╨╕╨╝ ╤Б╤Г╨╝╨╝╤Г ╨╜╨░ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А╤Л
 			cmp ErrorFlag, 01h
 			je SumOutRet
+			
+			xor cx, cx
+			mov cl, 01h
             lea   bx, DataHexTabl 
-            mov   ah, Res
-            mov   al,ah               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   SumPort, al    ;выводим на страший индикатор
-            mov   al, 01h            
-            out   SumPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   SumPowerPort, al    ;гасим индикатор
-		    mov   ah, Res+1       ;загружаем в регистры
-            mov   al, ah              ;текущее значение суммы                 
-            xlat
-		    not al         ;табличное преобразование младшей цифры
-            out   SumPort, al    ;Выводим на младший индикатор            
-            mov   al, 02h            
-            out   SumPowerPort, al    ;зажигаем младший индикатор
-            mov   al,00h
-            out   SumPowerPort, al    ;гасим индикатор
-		    mov   ah, Res+2       ;загружаем в регистры
-            mov   al, ah              ;текущее значение суммы                 
-            xlat
-		    not al         ;табличное преобразование младшей цифры
-            out   SumPort, al    ;Выводим на младший индикатор            
-            mov   al, 04h            
-            out   SumPowerPort, al    ;зажигаем младший индикатор
-            mov   al,00h
-            out   SumPowerPort, al    ;гасим индикатор
-		    mov   ah, Res+3       ;загружаем в регистры
-            mov   al, ah              ;текущее значение суммы                 
-            xlat
-		    not al         ;табличное преобразование младшей цифры
-            out   SumPort, al    ;Выводим на младший индикатор            
-            mov   al, 08h            
-            out   SumPowerPort, al    ;зажигаем младший индикатор
-            mov   al,00h
-            out   SumPowerPort, al    ;гасим индикатор
-		    mov   ah, Res+4       ;загружаем в регистры
-            mov   al, ah              ;текущее значение суммы                 
-            xlat
-		    not al         ;табличное преобразование младшей цифры
-            out   SumPort, al    ;Выводим на младший индикатор            
-            mov   al, 010h            
-            out   SumPowerPort, al    ;зажигаем младший индикатор
-            mov   al,00h
-            out   SumPowerPort, al    ;гасим индикатор
-			mov   ah, Res+5       ;загружаем в регистры
-            mov   al, ah              ;текущее значение суммы                 
-            xlat
-		    not al         ;табличное преобразование младшей цифры
-            out   SumPort, al    ;Выводим на младший индикатор            
-            mov   al, 020h            
-            out   SumPowerPort, al    ;зажигаем младший индикатор
-            mov   al,00h
-            out   SumPowerPort, al    ;гасим индикатор
+			lea SI, Res
+SumOut1:	mov ah, [SI]
+			mov al, ah
+			xlat
+			not al					;╤В╨░╨▒╨╗╨╕╤З╨╜╨╛╨╡ ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╨╡
+			out SumPort, al			;╨▓╤Л╨▓╨╛╨┤╨╕╨╝ ╨╜╨░ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+			mov al, cl
+			out SumPowerPort, al	;╨╖╨░╨╢╨╕╨│╨░╨╡╨╝ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+			mov al,00h
+			out SumPowerPort, al	;╨│╨░╤Б╨╕╨╝ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+			shl cl, 1
+			inc SI
+			cmp cl, 20h
+			jbe SumOut1
 		    xor ah, ah
+			xor cx, cx
 SumOutRet:  ret
 SumOut      ENDP
 
 CntOut 	    PROC NEAR
+			xor cx, cx
+			mov cl, 01h
 			lea   bx, DataHexTabl
-			mov   ah, byte ptr Cnt
-			mov   al,ah               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   CntPort, al    ;выводим на страший индикатор
-            mov   al, 01h            
-            out   CntPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   CntPowerPort, al    ;гасим индикатор
-			
-			mov   ah, byte ptr Cnt+1
-			mov   al,ah               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   CntPort, al    ;выводим на страший индикатор
-            mov   al, 02h            
-            out   CntPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   CntPowerPort, al    ;гасим индикатор
-			
-			mov   ah, byte ptr Cnt+2
-			mov   al,ah               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   CntPort, al    ;выводим на страший индикатор
-            mov   al, 04h            
-            out   CntPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   CntPowerPort, al    ;гасим индикатор
-			
-			lea   bx, DataHexTabl
-			mov   ah, byte ptr CntBrak
-			mov   al,ah               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   CntPort, al    ;выводим на страший индикатор
-            mov   al, 08h            
-            out   CntPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   CntPowerPort, al    ;гасим индикатор
-			
-			mov   ah, byte ptr CntBrak+1
-			mov   al,ah               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   CntPort, al    ;выводим на страший индикатор
-            mov   al, 10h            
-            out   CntPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   CntPowerPort, al    ;гасим индикатор
-			
-			mov   ah, byte ptr CntBrak+2
-			mov   al,ah               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   CntPort, al    ;выводим на страший индикатор
-            mov   al, 20h            
-            out   CntPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   CntPowerPort, al    ;гасим индикатор
-			
-			
+			lea SI, byte ptr Cnt
+CntOut1:	mov ah, [SI]
+			mov al, ah
+			xlat
+			not al				;╤В╨░╨▒╨╗╨╕╤З╨╜╨╛╨╡ ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╨╡
+			out CntPort, al		;╨▓╤Л╨▓╨╛╨┤╨╕╨╝ ╨╜╨░ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+			mov al, cl
+			out CntPowerPort, al	;╨╖╨░╨╢╨╕╨│╨░╨╡╨╝ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А 
+			mov al,00h
+			out CntPowerPort, al	;╨│╨░╤Б╨╕╨╝ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+			shl cl, 1
+			inc SI
+			cmp cl, 04h
+			jbe CntOut1
 			xor ah, ah
+			xor cx, cx
+			
+			mov cl, 08h
+			lea   bx, DataHexTabl
+			lea SI, byte ptr CntBrak
+CntOut2:	mov ah, [SI]
+			mov al, ah
+			xlat
+			not al					;╤В╨░╨▒╨╗╨╕╤З╨╜╨╛╨╡ ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╨╡
+			out CntPort, al			;╨▓╤Л╨▓╨╛╨┤╨╕╨╝ ╨╜╨░ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+			mov al, cl
+			out CntPowerPort, al	;╨╖╨░╨╢╨╕╨│╨░╨╡╨╝ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А 
+			mov al,00h
+			out CntPowerPort, al	;╨│╨░╤Б╨╕╨╝ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+			shl cl, 1
+			inc SI
+			cmp cl, 20h
+			jbe CntOut2
+			xor ah, ah
+			xor cx, cx
 			ret
 CntOut 	   ENDP
 
@@ -443,115 +382,93 @@ ErrorOut Proc Near
 			je ErrorRet
 			
 			xor al, al
-			lea   bx, ErrTable
+			xor bl, bl
+			
+			lea bx, ErrTable
+			;xor bl, bl
+			xor dl, dl
+			mov cl, 02h
+			
+ErrorOut1:	mov al, dl
             xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   SumPort, al    ;выводим на страший индикатор
-            mov   al, 20h            
-            out   SumPowerPort, al    ;зажигаем старший индикатор    
+		    not al				 ;╤В╨░╨▒╨╗╨╕╤З╨╜╨╛╨╡ ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╨╡
+            out   SumPort, al    ;╨▓╤Л╨▓╨╛╨┤╨╕╨╝ ╨╜╨░ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+            mov   al, cl            
+            out   SumPowerPort, al    ;╨╖╨░╨╢╨╕╨│╨░╨╡╨╝ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А    
             mov   al,00h             
-            out   SumPowerPort, al    ;гасим индикатор
+            out   SumPowerPort, al    ;╨│╨░╤Б╨╕╨╝ ╨╕╨╜╨┤╨╕╨║╨░╤В╨╛╤А
+			shl cl, 1
+			inc dl
+			cmp cl, 20h
+			jbe ErrorOut1
+			xor ah, ah
+			xor cx, cx
+			xor dl, dl
 			
-			
-			mov   al,1               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   SumPort, al    ;выводим на страший индикатор
-            mov   al, 10h            
-            out   SumPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   SumPowerPort, al    ;гасим индикатор
-			
-			
-			mov   al,2               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   SumPort, al    ;выводим на страший индикатор
-            mov   al, 08h            
-            out   SumPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   SumPowerPort, al    ;гасим индикатор
-			
-			mov   al,3               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   SumPort, al    ;выводим на страший индикатор
-            mov   al, 04h            
-            out   SumPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   SumPowerPort, al    ;гасим индикатор
-			
-			mov   al,4               ;теперь в al старшая цифра
-            xlat
-		    not al		   ;табличное преобразование старшей цифры
-            out   SumPort, al    ;выводим на страший индикатор
-            mov   al, 02h            
-            out   SumPowerPort, al    ;зажигаем старший индикатор    
-            mov   al,00h             
-            out   SumPowerPort, al    ;гасим индикатор
 ErrorRet:	ret
 ErrorOut ENDP
 
 VibrDestr  PROC  NEAR
-VD1:       mov   ah,al       ;Сохранение исходного состояния
-           mov   bh,0        ;Сброс счётчика повторений
-VD2:       in    al,dx       ;Ввод текущего состояния
-           cmp   ah,al       ;Текущее состояние=исходному?
-           jne   VD1         ;Переход, если нет
-           inc   bh          ;Инкремент счётчика повторений
-           cmp   bh,NMax     ;Конец дребезга?
-           jne   VD2         ;Переход, если нет
-           mov   al,ah       ;Восстановление местоположения данных
+VD1:       mov   ah,al       ;╨б╨╛╤Е╤А╨░╨╜╨╡╨╜╨╕╨╡ ╨╕╤Б╤Е╨╛╨┤╨╜╨╛╨│╨╛ ╤Б╨╛╤Б╤В╨╛╤П╨╜╨╕╤П
+           mov   bh,0        ;╨б╨▒╤А╨╛╤Б ╤Б╤З╤С╤В╤З╨╕╨║╨░ ╨┐╨╛╨▓╤В╨╛╤А╨╡╨╜╨╕╨╣
+VD2:       in    al,dx       ;╨Т╨▓╨╛╨┤ ╤В╨╡╨║╤Г╤Й╨╡╨│╨╛ ╤Б╨╛╤Б╤В╨╛╤П╨╜╨╕╤П
+           cmp   ah,al       ;╨в╨╡╨║╤Г╤Й╨╡╨╡ ╤Б╨╛╤Б╤В╨╛╤П╨╜╨╕╨╡=╨╕╤Б╤Е╨╛╨┤╨╜╨╛╨╝╤Г?
+           jne   VD1         ;╨Я╨╡╤А╨╡╤Е╨╛╨┤, ╨╡╤Б╨╗╨╕ ╨╜╨╡╤В
+           inc   bh          ;╨Ш╨╜╨║╤А╨╡╨╝╨╡╨╜╤В ╤Б╤З╤С╤В╤З╨╕╨║╨░ ╨┐╨╛╨▓╤В╨╛╤А╨╡╨╜╨╕╨╣
+           cmp   bh,NMax     ;╨Ъ╨╛╨╜╨╡╤Ж ╨┤╤А╨╡╨▒╨╡╨╖╨│╨░?
+           jne   VD2         ;╨Я╨╡╤А╨╡╤Е╨╛╨┤, ╨╡╤Б╨╗╨╕ ╨╜╨╡╤В
+           mov   al,ah       ;╨Т╨╛╤Б╤Б╤В╨░╨╜╨╛╨▓╨╗╨╡╨╜╨╕╨╡ ╨╝╨╡╤Б╤В╨╛╨┐╨╛╨╗╨╛╨╢╨╡╨╜╨╕╤П ╨┤╨░╨╜╨╜╤Л╤Е
            ret
 VibrDestr  ENDP
 
 CopyArr PROC NEAR
-			MOV CX, 10 ;Загрузка счётчика циклов
-			LEA BX, HexArr ;Загрузка адреса массива цифр
-			LEA BP, HexTabl ;Загрузка адреса таблицы преобразования
-			LEA DI, DataHexArr ;Загрузка адреса массива цифр в сегменте данных
-			LEA SI, DataHexTabl ;Загрузка адреса таблицы преобразования в сегменте данных
+			MOV CX, 10 ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╤Б╤З╤С╤В╤З╨╕╨║╨░ ╤Ж╨╕╨║╨╗╨╛╨▓
+			LEA BX, HexArr ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╨░╨┤╤А╨╡╤Б╨░ ╨╝╨░╤Б╤Б╨╕╨▓╨░ ╤Ж╨╕╤Д╤А
+			LEA BP, HexTabl ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╨░╨┤╤А╨╡╤Б╨░ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П
+			LEA DI, DataHexArr ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╨░╨┤╤А╨╡╤Б╨░ ╨╝╨░╤Б╤Б╨╕╨▓╨░ ╤Ж╨╕╤Д╤А ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В╨╡ ╨┤╨░╨╜╨╜╤Л╤Е
+			LEA SI, DataHexTabl ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╨░╨┤╤А╨╡╤Б╨░ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В╨╡ ╨┤╨░╨╜╨╜╤Л╤Е
 CopyArr0:
-			MOV AL, CS:[BX] ;Чтение цифры из массива в аккумулятор
-			MOV [DI], AL ;Запись цифры в сегмент данных/DataHexArr
-			INC BX ;Модификация адреса HexArr
-			INC DI ;Модификация адреса DataHexArr
+			MOV AL, CS:[BX] ;╨з╤В╨╡╨╜╨╕╨╡ ╤Ж╨╕╤Д╤А╤Л ╨╕╨╖ ╨╝╨░╤Б╤Б╨╕╨▓╨░ ╨▓ ╨░╨║╨║╤Г╨╝╤Г╨╗╤П╤В╨╛╤А
+			MOV [DI], AL ;╨Ч╨░╨┐╨╕╤Б╤М ╤Ж╨╕╤Д╤А╤Л ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В ╨┤╨░╨╜╨╜╤Л╤Е/DataHexArr
+			INC BX ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ HexArr
+			INC DI ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ DataHexArr
 			LOOP CopyArr0
 			
-			MOV CX, 10 ;Загрузка счётчика циклов
+			MOV CX, 10 ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╤Б╤З╤С╤В╤З╨╕╨║╨░ ╤Ж╨╕╨║╨╗╨╛╨▓
 CopyArr1:
-			MOV AH, CS:[BP] ;Чтение графического образа из таблицы преобразования
-			MOV [SI], AH ;Запись графического образа в сегмент данных/DataHexTabl
-			INC BP ;Модификация адреса HexTabl
-			INC SI ;Модификация адреса DataHexTabl
+			MOV AH, CS:[BP] ;╨з╤В╨╡╨╜╨╕╨╡ ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨╕╨╖ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П
+			MOV [SI], AH ;╨Ч╨░╨┐╨╕╤Б╤М ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В ╨┤╨░╨╜╨╜╤Л╤Е/DataHexTabl
+			INC BP ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ HexTabl
+			INC SI ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ DataHexTabl
 			LOOP CopyArr1
 			
-			MOV CX, 14 ;Загрузка счётчика циклов
-			LEA BP, Table ;Загрузка адреса таблицы преобразования
-			LEA SI, DataTable ;Загрузка адреса таблицы преобразования в сегменте данных
+			MOV CX, 14 ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╤Б╤З╤С╤В╤З╨╕╨║╨░ ╤Ж╨╕╨║╨╗╨╛╨▓
+			LEA BP, Table ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╨░╨┤╤А╨╡╤Б╨░ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П
+			LEA SI, DataTable ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╨░╨┤╤А╨╡╤Б╨░ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В╨╡ ╨┤╨░╨╜╨╜╤Л╤Е
 CopyArr2:
-			MOV AH, CS:[BP] ;Чтение графического образа из таблицы преобразования
-			MOV [SI], AH ;Запись графического образа в сегмент данных/DataTable
-			MOV AL, CS:[BP+1] ;Чтение графического образа из таблицы преобразования
-			MOV [SI+1], AL ;Запись графического образа в сегмент данных/DataTable
-			INC BP ;Модификация адреса Table
-			INC SI ;Модификация адреса DataTable
-			INC BP ;Модификация адреса Table
-			INC SI ;Модификация адреса DataTable
+			MOV AH, CS:[BP] ;╨з╤В╨╡╨╜╨╕╨╡ ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨╕╨╖ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П
+			MOV [SI], AH ;╨Ч╨░╨┐╨╕╤Б╤М ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В ╨┤╨░╨╜╨╜╤Л╤Е/DataTable
+			MOV AL, CS:[BP+1] ;╨з╤В╨╡╨╜╨╕╨╡ ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨╕╨╖ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П
+			MOV [SI+1], AL ;╨Ч╨░╨┐╨╕╤Б╤М ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В ╨┤╨░╨╜╨╜╤Л╤Е/DataTable
+			INC BP ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ Table
+			INC SI ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ DataTable
+			INC BP ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ Table
+			INC SI ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ DataTable
 			LOOP CopyArr2
 			
-			MOV CX, 4 ;Загрузка счётчика циклов
-			LEA BP, Err ;Загрузка адреса таблицы преобразования
-			LEA SI, ErrTable ;Загрузка адреса таблицы преобразования в сегменте данных
+			MOV CX, 4 ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╤Б╤З╤С╤В╤З╨╕╨║╨░ ╤Ж╨╕╨║╨╗╨╛╨▓
+			LEA BP, Err ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╨░╨┤╤А╨╡╤Б╨░ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П
+			LEA SI, ErrTable ;╨Ч╨░╨│╤А╤Г╨╖╨║╨░ ╨░╨┤╤А╨╡╤Б╨░ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В╨╡ ╨┤╨░╨╜╨╜╤Л╤Е
 CopyArr3:
-			MOV AH, CS:[BP] ;Чтение графического образа из таблицы преобразования
-			MOV [SI], AH ;Запись графического образа в сегмент данных/DataTable
-			MOV AL, CS:[BP+1] ;Чтение графического образа из таблицы преобразования
-			MOV [SI+1], AL ;Запись графического образа в сегмент данных/DataTable
-			INC BP ;Модификация адреса Err
-			INC SI ;Модификация адреса ErrTable
+			MOV AH, CS:[BP] ;╨з╤В╨╡╨╜╨╕╨╡ ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨╕╨╖ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П
+			MOV [SI], AH ;╨Ч╨░╨┐╨╕╤Б╤М ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В ╨┤╨░╨╜╨╜╤Л╤Е/DataTable
+			MOV AL, CS:[BP+1] ;╨з╤В╨╡╨╜╨╕╨╡ ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨╕╨╖ ╤В╨░╨▒╨╗╨╕╤Ж╤Л ╨┐╤А╨╡╨╛╨▒╤А╨░╨╖╨╛╨▓╨░╨╜╨╕╤П
+			MOV [SI+1], AL ;╨Ч╨░╨┐╨╕╤Б╤М ╨│╤А╨░╤Д╨╕╤З╨╡╤Б╨║╨╛╨│╨╛ ╨╛╨▒╤А╨░╨╖╨░ ╨▓ ╤Б╨╡╨│╨╝╨╡╨╜╤В ╨┤╨░╨╜╨╜╤Л╤Е/DataTable
+			INC BP ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ Err
+			INC SI ;╨Ь╨╛╨┤╨╕╤Д╨╕╨║╨░╤Ж╨╕╤П ╨░╨┤╤А╨╡╤Б╨░ ErrTable
 			LOOP CopyArr3
 			xor bp,bp
+			xor cx, cx
 			ret
 CopyArr ENDP
 
@@ -574,10 +491,10 @@ MainLoop:  ;call KeyRead
 			call CntOut
 			call ErrorOut
 			jmp MainLoop
-;Здесь размещается код программы
+;╨Ч╨┤╨╡╤Б╤М ╤А╨░╨╖╨╝╨╡╤Й╨░╨╡╤В╤Б╤П ╨║╨╛╨┤ ╨┐╤А╨╛╨│╤А╨░╨╝╨╝╤Л
 
 
-;В следующей строке необходимо указать смещение стартовой точки
+;╨Т ╤Б╨╗╨╡╨┤╤Г╤О╤Й╨╡╨╣ ╤Б╤В╤А╨╛╨║╨╡ ╨╜╨╡╨╛╨▒╤Е╨╛╨┤╨╕╨╝╨╛ ╤Г╨║╨░╨╖╨░╤В╤М ╤Б╨╝╨╡╤Й╨╡╨╜╨╕╨╡ ╤Б╤В╨░╤А╤В╨╛╨▓╨╛╨╣ ╤В╨╛╤З╨║╨╕
 			org   RomSize-16-((InitDataEnd-InitDataStart+15) AND 0FFF0h)
 			ASSUME cs:NOTHING
 			jmp   Far Ptr Start
