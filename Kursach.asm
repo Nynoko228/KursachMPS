@@ -18,25 +18,25 @@ IntTable   ENDS
 
 Data       SEGMENT use16 AT 40h
 ;Здесь размещаются описания переменных
-DataHexArr db 10 dup(?) 
-DataHexTabl db 10 dup(?)
-DataTable dd 7 dup(?)
-ErrTable db 5 dup (?)
-Res db 6 dup (?)
-SelectedNumber DD ?
-OldButton db    ?
-OldCntrl db    ?
-StopFlag db ?
-BrakFlag db ?
-ErrorFlag db ?
-SumFlag db ?
-SbrosFlag db ?
-Buffer dw ?
-Cnt DD ?
-CntAll DD ?
-CntBrak DD ?
-Time DD ?
-TimeEndFlag DB ?
+	DataHexArr db 10 dup(?) 
+	DataHexTabl db 10 dup(?)
+	DataTable dd 7 dup(?)
+	ErrTable db 5 dup (?)
+	Res db 6 dup (?)
+	SelectedNumber DD ?
+	OldButton db    ?
+	OldCntrl db    ?
+	StopFlag db ?
+	BrakFlag db ?
+	ErrorFlag db ?
+	SumFlag db ?
+	SbrosFlag db ?
+	Buffer dw ?
+	Cnt DD ?
+	CntAll DD ?
+	CntBrak DD ?
+	Time DD ?
+	TimeEndFlag DB ?
 Data       ENDS
 
 
@@ -124,7 +124,7 @@ Timer2:		MOV AL,AH
 			mov SumFlag, 01h
 Timer3:		ROL AH, 1
 			
-			MOV word ptr Time, 0050h
+			MOV word ptr Time, 0010h
 			MOV word ptr Time+2, 0000h
 			JMP Timer0	
 Timer1: 	MOV Buffer, AX
@@ -141,8 +141,7 @@ ReadInput  	PROC  Near
 			cmp al, OldCntrl
 			jne m3 
 			
-m6:		   	; Пишу кнопку сброса снизу
-			cmp SbrosFlag, 01h
+m6:		   	cmp SbrosFlag, 01h
 			je m1
 			cmp ErrorFlag, 01h
 			je m1
@@ -189,22 +188,16 @@ m2:
            
 			xor al, al
 			lea BX, Table
+			lea DI, SelectedNumber
 			shl ah, 2
-			add al, ah
+			MOV CX, 04h
+ReadInput1:	add al, ah
 			xlat
-			mov byte ptr SelectedNumber, al 
-			lea BX, Table+1
-			add al, ah
-			xlat
-			mov byte ptr SelectedNumber+1, al  
-			lea BX, Table+2
-			add al, ah
-			xlat
-			mov byte ptr SelectedNumber+2, al  
-			lea BX, Table+3
-			add al, ah
-			xlat
-			mov byte ptr SelectedNumber+3, al  		   
+			mov byte ptr [DI], al 
+			inc BX
+			inc DI
+			loop ReadInput1
+ 		   
 m1:		   	RET           
 ReadInput  	ENDP
 
@@ -253,30 +246,18 @@ M8:			call AddCntAll
 			mov byte ptr Cnt+1, 00h
 			mov byte ptr Cnt+2, 01h
 			
+			 
 M9:			mov SumFlag, 00h
-			mov ax, word ptr Res
-			ADD al, byte ptr SelectedNumber
+			mov CX, 04h
+			lea SI, Res
+			lea BX, SelectedNumber
+AccSum1:	mov ax, word ptr [SI]
+			ADD al, byte ptr [BX]
 			AAA
-			mov word ptr Res, ax
-
-			
-			mov ax, word ptr Res+1
-			ADD al, byte ptr SelectedNumber+1
-			AAA
-			mov word ptr Res+1, ax
-
-			
-			mov ax, word ptr Res+2
-			ADD al, byte ptr SelectedNumber+2
-			AAA
-			mov word ptr Res+2, ax
-
-			
-			mov ax, word ptr Res+3
-			ADD al, byte ptr SelectedNumber+3
-			AAA
-			mov word ptr Res+3, ax
-
+			mov word ptr [SI], ax
+			inc SI
+			inc BX
+			loop AccSum1
 			CMP Res+4, 09h
 			JBE M7
 			mov Res+4, 0h
@@ -376,7 +357,6 @@ ErrorOut Proc Near
 			xor bl, bl
 			
 			lea bx, ErrTable
-			;xor bl, bl
 			xor dl, dl
 			mov cl, 02h
 			
@@ -482,8 +462,7 @@ Start:
 			call Initialization
 			call CopyArr
 		   
-MainLoop:  ;call KeyRead
-			call ReadInput
+MainLoop:	call ReadInput
 			call Simul
 			call AccumulationSumm
 			call SumOut
