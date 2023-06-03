@@ -221,12 +221,6 @@ M8:			mov ax, word ptr Cnt
 			inc ax
 			AAA
 			mov word ptr Cnt, ax
-			CMP byte ptr Cnt+1, 09h
-			JBE M9 
-			mov StopFlag, 01h
-			mov OneHundredFlag, 01h
-			mov byte ptr Cnt+1, 00h
-			mov byte ptr Cnt+2, 01h
 			
 			 
 M9:			mov SumFlag, 00h
@@ -252,16 +246,36 @@ M10:		mov BrakFlag, 00h
 			inc ax
 			AAA
 			mov word ptr CntBrak, ax
-			CMP byte ptr CntBrak+1, 09h
-			JBE M7 
-			mov byte ptr CntBrak+1, 00h
-			mov byte ptr CntBrak+2, 01h
-			
 M7:			mov bp, word ptr SelectedNumber
 			and bp, 00FFh
 			ret
 AccumulationSumm ENDP
 
+OneHundredProverka PROC NEAR
+			CMP byte ptr Cnt+1, 09h
+			JBE HundredRet 
+			mov StopFlag, 01h
+			mov OneHundredFlag, 01h
+			mov byte ptr Cnt+1, 00h
+			mov byte ptr Cnt+2, 01h
+HundredRet:	ret
+OneHundredProverka ENDP
+
+OneHundredProverkaBrak PROC NEAR
+			CMP byte ptr CntBrak+1, 09h
+			JBE HundredBrakRet 
+			mov StopFlag, 01h
+			mov OneHundredFlag, 01h
+			mov byte ptr CntBrak+1, 00h
+			mov byte ptr CntBrak+2, 01h
+HundredBrakRet:	ret
+OneHundredProverkaBrak ENDP 
+
+OverflowCheck PROC NEAR
+			call OneHundredProverka
+			call OneHundredProverkaBrak
+			ret
+OverflowCheck ENDP
 
 SumOut     PROC NEAR  			;Выводим сумму на индикаторы
 			xor cx, cx
@@ -449,6 +463,7 @@ Start:
 		   
 MainLoop:	call ReadInput
 			call Simul
+			call OverflowCheck
 			call AccumulationSumm
 			call DisplayOutput
 			call Sbros
