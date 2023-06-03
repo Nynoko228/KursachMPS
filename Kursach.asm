@@ -200,8 +200,9 @@ ReadInput  	ENDP
 
 AccumulationSumm PROC Near
 			cmp SbrosFlag, 01h
-			je M7
-			cmp OneHundredFlag, 01h
+			jne M12
+			call Sbros
+M12:		cmp OneHundredFlag, 01h
 			je M7
 		    cmp StopFlag, 01h
 			je M7
@@ -246,7 +247,8 @@ M10:		mov BrakFlag, 00h
 			inc ax
 			AAA
 			mov word ptr CntBrak, ax
-M7:			mov bp, word ptr SelectedNumber
+M7:			
+			mov bp, word ptr SelectedNumber
 			and bp, 00FFh
 			ret
 AccumulationSumm ENDP
@@ -342,36 +344,6 @@ CntOut2:	mov ah, [SI]
 			ret
 CntOut 	   ENDP
 
-ErrorOut Proc Near
-			cmp OneHundredFlag, 00h
-			je ErrorRet
-			
-			xor al, al
-			xor bl, bl
-			
-			lea bx, ErrTable
-			xor dl, dl
-			mov cl, 02h
-			
-ErrorOut1:	mov al, dl
-            xlat
-		    not al				 ;табличное преобразование
-            out   SumPort, al    ;выводим на индикатор
-            mov   al, cl            
-            out   SumPowerPort, al    ;зажигаем индикатор    
-            mov   al,00h             
-            out   SumPowerPort, al    ;гасим индикатор
-			shl cl, 1
-			inc dl
-			cmp cl, 20h
-			jbe ErrorOut1
-			xor ah, ah
-			xor cx, cx
-			xor dl, dl
-			
-ErrorRet:	ret
-ErrorOut ENDP
-
 Sbros PROC NEAR
 			cmp SbrosFlag, 00h
 			je SbrosRet
@@ -447,6 +419,7 @@ CopyArr3:
 			LOOP CopyArr3
 			xor bp,bp
 			xor cx, cx
+			xor ax, ax
 			ret
 CopyArr ENDP
 
@@ -466,7 +439,6 @@ MainLoop:	call ReadInput
 			call OverflowCheck
 			call AccumulationSumm
 			call DisplayOutput
-			call Sbros
 			jmp MainLoop
 ;Здесь размещается код программы
 
