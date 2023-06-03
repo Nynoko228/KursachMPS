@@ -10,7 +10,7 @@ KbdPort = 0F7h ; 0
 IndPort = 0FBh ; 4
 ControlPort = 0FEh ; 1
 
-NMax = 70
+NMax = 100
 
 IntTable   SEGMENT use16 AT 0
 ;Здесь размещаются адреса обработчиков прерываний
@@ -83,7 +83,7 @@ Initialization PROC NEAR
 			mov word ptr Res+4, ax
 			mov word ptr SelectedNumber, ax
 			mov word ptr SelectedNumber+2, ax
-			mov TimeEndFlag, 0FFh
+			mov TimeEndFlag, 01h
 			mov Buffer, 0100h
 			mov ax, Buffer
 			mov al, ah
@@ -109,10 +109,10 @@ Timer0:	; Таймер
 			OR SI, word ptr Time+2
 			MOV TimeEndFlag, 0
 			JNZ Timer1
-			MOV TimeEndFlag, 0FFh
+			MOV TimeEndFlag, 01h
 		
 Timer2:		MOV AL,AH
-			CMP TimeEndFlag, 0FFh
+			CMP TimeEndFlag, 01h
 			JNZ Timer0
 		
 			Out IndPort, AL
@@ -345,11 +345,8 @@ CntOut2:	mov ah, [SI]
 CntOut 	   ENDP
 
 Sbros PROC NEAR
-			cmp SbrosFlag, 00h
-			je SbrosRet
 			call Initialization
-			call CopyArr
-SbrosRet:	ret
+			ret
 Sbros ENDP
 
 DisplayOutput PROC NEAR
