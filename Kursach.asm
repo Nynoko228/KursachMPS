@@ -67,7 +67,7 @@ Code       SEGMENT use16
 	
 Initialization PROC NEAR
 			xor ax, ax
-			mov StopFlag, 01h
+			mov StopFlag, 0FFh
 			mov BrakFlag, 00h
 			mov OneHundredFlag, 00h
 			mov SumFlag, 00h
@@ -96,9 +96,9 @@ Simul PROC NEAR
 			MOV CX, AX
 			MOV AX, Buffer
 			
-			cmp StopFlag, 01h
+			cmp StopFlag, 0FFh
 			je Timer1
-			cmp OneHundredFlag, 01h
+			cmp OneHundredFlag, 0FFh
 			je Timer1
 			jmp Timer2
 		
@@ -118,7 +118,7 @@ Timer2:		MOV AL,AH
 			Out IndPort, AL
 			cmp AL, 80h
 			jne Timer3
-			mov SumFlag, 01h
+			mov SumFlag, 0FFh
 Timer3:		ROL AH, 1
 			
 			MOV word ptr Time, 0007h
@@ -138,9 +138,9 @@ ReadInput  	PROC  Near
 			cmp al, OldCntrl
 			jne m3 
 			
-m6:		   	cmp SbrosFlag, 01h
+m6:		   	cmp SbrosFlag, 0FFh
 			je m1
-			cmp OneHundredFlag, 01h
+			cmp OneHundredFlag, 0FFh
 			je m1
 			
 			jmp m4
@@ -157,10 +157,10 @@ m5:		   	inc   ah
 			
 			cmp ah, 03h
 			jne NoSbros
-			mov SbrosFlag, 01h
+			mov SbrosFlag, 0FFh
 NoSbros:	cmp ah, 02h
 			jb m11
-			mov BrakFlag, 01h
+			mov BrakFlag, 0FFh
 			xor ah, ah
 			jmp m6
 		   
@@ -199,18 +199,18 @@ m1:		   	RET
 ReadInput  	ENDP
 
 AccumulationSumm PROC Near
-			cmp SbrosFlag, 01h
+			cmp SbrosFlag, 0FFh
 			jne M12
 			call Sbros
-M12:		cmp OneHundredFlag, 01h
+M12:		cmp OneHundredFlag, 0FFh
 			je M7
-		    cmp StopFlag, 01h
+		    cmp StopFlag, 0FFh
 			je M7
 			cmp SumFlag, 00h
 			je M7
 			
 			xor ax,ax
-			cmp BrakFlag, 01h
+			cmp BrakFlag, 0FFh
 			je M10
 			cmp word ptr SelectedNumber+2, 0
 			JNZ M8
@@ -256,8 +256,8 @@ AccumulationSumm ENDP
 OneHundredProverka PROC NEAR
 			CMP byte ptr Cnt+1, 09h
 			JBE HundredRet 
-			mov StopFlag, 01h
-			mov OneHundredFlag, 01h
+			mov StopFlag, 0FFh
+			mov OneHundredFlag, 0FFh
 			mov byte ptr Cnt+1, 00h
 			mov byte ptr Cnt+2, 01h
 HundredRet:	ret
@@ -266,8 +266,8 @@ OneHundredProverka ENDP
 OneHundredProverkaBrak PROC NEAR
 			CMP byte ptr CntBrak+1, 09h
 			JBE HundredBrakRet 
-			mov StopFlag, 01h
-			mov OneHundredFlag, 01h
+			mov StopFlag, 0FFh
+			mov OneHundredFlag, 0FFh
 			mov byte ptr CntBrak+1, 00h
 			mov byte ptr CntBrak+2, 01h
 HundredBrakRet:	ret
