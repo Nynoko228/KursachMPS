@@ -366,6 +366,12 @@ Sbros PROC NEAR
 SbrosRet:	ret
 Sbros ENDP
 
+DisplayOutput PROC NEAR
+			call SumOut
+			call CntOut
+			ret
+DisplayOutput ENDP
+
 VibrDestr  PROC  NEAR
 VD1:       mov   ah,al       ;Сохранение исходного состояния
            mov   ch,0        ;Сброс счётчика повторений
@@ -444,8 +450,7 @@ Start:
 MainLoop:	call ReadInput
 			call Simul
 			call AccumulationSumm
-			call SumOut
-			call CntOut
+			call DisplayOutput
 			call Sbros
 			jmp MainLoop
 ;Здесь размещается код программы
