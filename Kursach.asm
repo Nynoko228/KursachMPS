@@ -61,7 +61,8 @@ Code       SEGMENT use16
            ASSUME cs:Code,ds:Data,es:Data
 		   
 	HexArr DB 00h,01h,02h,03h,04h,05h,06h,07h,08h,09h
-	HexTabl DB 3Fh,0Ch,76h,5Eh,4Dh,5Bh,7Bh,0Eh,7Fh,5Fh 
+	;HexTabl DB 3Fh,0Ch,76h,5Eh,4Dh,5Bh,7Bh,0Eh,7Fh,5Fh 
+	HexTabl DB 0C0H, 0F3h, 89h, 0A1h, 0B2h, 0A4h, 84h, 0F1h, 80h, 0A0h 
 	Table DD 0500h, 010000h, 020000h, 050000h, 01000000h, 02000000h, 05000000h 
 	Err DB 27h, 3fh, 27h, 27h, 73h
 	
@@ -279,7 +280,7 @@ OverflowCheck PROC NEAR
 			ret
 OverflowCheck ENDP
 
-SumOut     PROC NEAR  			;Выводим сумму на индикаторы
+SumOut     PROC NEAR  				;Выводим сумму на индикаторы
 			xor cx, cx
 			mov cl, 01h
             lea   bx, DataHexTabl 
@@ -287,7 +288,7 @@ SumOut     PROC NEAR  			;Выводим сумму на индикаторы
 SumOut1:	mov ah, [SI]
 			mov al, ah
 			xlat
-			not al					;табличное преобразование
+			;not al					;табличное преобразование
 			out SumPort, al			;выводим на индикатор
 			mov al, cl
 			out SumPowerPort, al	;зажигаем индикатор
@@ -309,9 +310,8 @@ CntOut 	    PROC NEAR
 			lea SI, byte ptr Cnt
 CntOut1:	mov ah, [SI]
 			mov al, ah
-			xlat
-			not al				;табличное преобразование
-			out CntPort, al		;выводим на индикатор
+			xlat					;табличное преобразование
+			out CntPort, al			;выводим на индикатор
 			mov al, cl
 			out CntPowerPort, al	;зажигаем индикатор 
 			mov al,00h
@@ -328,8 +328,7 @@ CntOut1:	mov ah, [SI]
 			lea SI, byte ptr CntBrak
 CntOut2:	mov ah, [SI]
 			mov al, ah
-			xlat
-			not al					;табличное преобразование
+			xlat					;табличное преобразование				
 			out CntPort, al			;выводим на индикатор
 			mov al, cl
 			out CntPowerPort, al	;зажигаем индикатор 
